@@ -1,0 +1,88 @@
+List Materi yang akan ada di dalam Project Pemrograman
+1. Array Multi-dimensi
+2. Struct
+3. Fungsi Rekursif
+4. Searching
+5. Sorting
+6. Pointer
+7. Operasi File
+
+Penjelasan Fitur dan Kegunaan:
+
+1. main.cpp
+-Entry point utama program
+-Menampilkan splash screen aplikasi
+-Implementasi menu utama dengan loop aplikasi
+-Mengatur alur program dan navigasi antar menu
+-Inisialisasi semua komponen penting
+
+2.models/DataCenter.h & DataCenter.cpp
+-Definisi struct utama DataCenter yang menampung semua komponen
+-Implementasi array multi-dimensi untuk layout data center (rak, server, dll)
+-Penggunaan pointer untuk mengelola koneksi antar perangkat
+
+3.models/Server.h & Server.cpp
+-Definisi struct Server dengan properti seperti ID, nama, IP, spesifikasi CPU/RAM, status
+-Metode untuk memeriksa status, menghitung resource usage, dll
+-Implementasi array untuk komponen-komponen server
+
+4.models/Rack.h & Rack.cpp
+-Definisi struct Rack yang menampung server
+-Implementasi array untuk mengelola posisi server dalam rak
+-Metode untuk managemen kapasitas, power, cooling
+
+5.models/NetworkDevice.h & NetworkDevice.cpp
+-Definisi struct untuk router, switch, dan perangkat jaringan lainnya
+-Implementasi penggunaan pointer untuk topologi jaringan
+-Metode untuk mengelola koneksi antar perangkat
+
+6.utils/FileManager.h & FileManager.cpp
+-Implementasi operasi file lengkap (baca, tulis, append, delete)
+-Fungsi serialisasi dan deserialisasi struct ke file biner
+-Penanganan error dan exception untuk operasi file
+
+7.utils/SearchAlgorithms.h & SearchAlgorithms.cpp
+-Implementasi berbagai algoritma pencarian (linear, binary, hash-based)
+-Fungsi pencarian khusus untuk struktur data kompleks
+-Optimisasi pencarian di array multi-dimensi
+
+8.utils/SortAlgorithms.h & SortAlgorithms.cpp
+-Implementasi beragam algoritma pengurutan (bubble, insertion, quick, merge sort)
+-Fungsi rekursif untuk algoritma sorting yang membutuhkannya
+-Pengurutan khusus untuk array multi-dimensi dan struct
+
+9.utils/DataStructures.h & DataStructures.cpp
+-Implementasi struktur data tambahan (linked list, queue, stack)
+-Penggunaan pointer untuk struktur data dinamis
+-Helper functions untuk manipulasi struktur data
+
+10.controllers/DataCenterController.h & DataCenterController.cpp
+-Pengelolaan keseluruhan data center
+-Implementasi logika bisnis utama
+-Koordinasi antara berbagai komponen
+
+11.controllers/ServerController.h & ServerController.cpp
+-Fungsi CRUD untuk server
+-Monitoring status server
+-Penggunaan array multi-dimensi dan pointer untuk manajemen server
+
+12.views/MenuView.h & MenuView.cpp
+-Tampilan menu interaktif console-based
+-Navigasi dengan shortcut keyboard
+-Validasi input pengguna
+
+13.views/DataCenterView.h & DataCenterView.cpp
+
+-Visualisasi layout data center dengan grafik ASCII
+-Tampilan status server dan jaringan secara real-time
+-Penggunaan warna dan styling untuk konsol (bila didukung)
+
+14.reports/ReportGenerator.h & ReportGenerator.cpp
+-Pembuatan laporan berbagai format (teks, CSV)
+-Export data untuk analisis eksternal
+-Implementasi fungsi rekursif untuk laporan hirarki
+
+15.reports/Statistics.h & Statistics.cpp
+-Analisis statistik penggunaan resource
+-Prediksi tren penggunaan
+-Perhitungan metrik performa
