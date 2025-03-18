@@ -1,5 +1,0 @@
-#DataCenter Configuration
-TotalRack=2
-
-Rack0=4    # Rack 0 contains 4 servers
-Rack1=4    # Rack 1 contains 4 servers
