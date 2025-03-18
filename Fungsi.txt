@@ -9,80 +9,147 @@ List Materi yang akan ada di dalam Project Pemrograman
 
 Penjelasan Fitur dan Kegunaan:
 
-1. main.cpp
--Entry point utama program
--Menampilkan splash screen aplikasi
--Implementasi menu utama dengan loop aplikasi
--Mengatur alur program dan navigasi antar menu
--Inisialisasi semua komponen penting
+1. Folder models/
+-datacenter.h & datacenter.cpp
+Fungsi: Mendefinisikan struktur utama DataCenter yang menjadi wadah untuk semua komponen.
+Fitur:
+Struct DataCenter dengan array multi-dimensi untuk layout ruangan
+Fungsi inisialisasi dan manajemen data center
+Penggunaan pointer untuk menghubungkan berbagai komponen data center
 
-2.models/DataCenter.h & DataCenter.cpp
--Definisi struct utama DataCenter yang menampung semua komponen
--Implementasi array multi-dimensi untuk layout data center (rak, server, dll)
--Penggunaan pointer untuk mengelola koneksi antar perangkat
+-server.h & server.cpp
+Fungsi: Mendefinisikan struktur Server dan koleksi server.
+Fitur:
+Struct Server dengan properti (ID, nama, spesifikasi, status)
+Array untuk menyimpan koleksi server
+Fungsi untuk memeriksa status dan kondisi server
 
-3.models/Server.h & Server.cpp
--Definisi struct Server dengan properti seperti ID, nama, IP, spesifikasi CPU/RAM, status
--Metode untuk memeriksa status, menghitung resource usage, dll
--Implementasi array untuk komponen-komponen server
+-network.h & network.cpp
+Fungsi: Mendefinisikan perangkat jaringan dan topologi koneksi.
+Fitur:
+Struct NetworkDevice (router, switch, dll)
+Matriks adjacency untuk representasi koneksi antar perangkat
+Implementasi pointer untuk struktur topologi jaringan
 
-4.models/Rack.h & Rack.cpp
--Definisi struct Rack yang menampung server
--Implementasi array untuk mengelola posisi server dalam rak
--Metode untuk managemen kapasitas, power, cooling
+-storage.h & storage.cpp
+Fungsi: Mendefinisikan perangkat penyimpanan dan management kapasitas.
+Fitur:
+Struct StorageDevice dengan properti (kapasitas, tipe, status)
+Fungsi untuk mengelola space dan monitoring perangkat storage
 
-5.models/NetworkDevice.h & NetworkDevice.cpp
--Definisi struct untuk router, switch, dan perangkat jaringan lainnya
--Implementasi penggunaan pointer untuk topologi jaringan
--Metode untuk mengelola koneksi antar perangkat
 
-6.utils/FileManager.h & FileManager.cpp
--Implementasi operasi file lengkap (baca, tulis, append, delete)
--Fungsi serialisasi dan deserialisasi struct ke file biner
--Penanganan error dan exception untuk operasi file
+2. Folder views/
+-menu.h & menu.cpp
+Fungsi: Menampilkan dan mengelola sistem menu aplikasi.
+Fitur:
+Struktur Menu dengan opsi dan sub-menu
+Fungsi tampilan menu dengan format dan highlight
+Sistem navigasi antar menu dan sub-menu
 
-7.utils/SearchAlgorithms.h & SearchAlgorithms.cpp
--Implementasi berbagai algoritma pencarian (linear, binary, hash-based)
--Fungsi pencarian khusus untuk struktur data kompleks
--Optimisasi pencarian di array multi-dimensi
+-display.h & display.cpp
+Fungsi: Menampilkan data dan visualisasi ke layar.
+Fitur:
+Fungsi untuk menampilkan tabel data
+Visualisasi status data center dengan ASCII art
+Format tampilan yang user-friendly
 
-8.utils/SortAlgorithms.h & SortAlgorithms.cpp
--Implementasi beragam algoritma pengurutan (bubble, insertion, quick, merge sort)
--Fungsi rekursif untuk algoritma sorting yang membutuhkannya
--Pengurutan khusus untuk array multi-dimensi dan struct
+-input.h & input.cpp
+Fungsi: Menangani input pengguna dan validasi.
+Fitur:
+Fungsi untuk mengambil dan memvalidasi berbagai jenis input
+Handling error untuk input yang tidak valid
+Bantuan input untuk pengguna
 
-9.utils/DataStructures.h & DataStructures.cpp
--Implementasi struktur data tambahan (linked list, queue, stack)
--Penggunaan pointer untuk struktur data dinamis
--Helper functions untuk manipulasi struktur data
 
-10.controllers/DataCenterController.h & DataCenterController.cpp
--Pengelolaan keseluruhan data center
--Implementasi logika bisnis utama
--Koordinasi antara berbagai komponen
+3. Folder controllers/
+-datacenter_ctrl.h & datacenter_ctrl.cpp
+Fungsi: Mengelola logika bisnis utama untuk data center.
+Fitur:
+Fungsi inisialisasi dan konfigurasi data center
+Koordinasi antar berbagai komponen
+Manajemen kapasitas dan resource data center
 
-11.controllers/ServerController.h & ServerController.cpp
--Fungsi CRUD untuk server
--Monitoring status server
--Penggunaan array multi-dimensi dan pointer untuk manajemen server
+-server_ctrl.h & server_ctrl.cpp
+Fungsi: Mengelola operasi server dan implementasi CRUD.
+Fitur:
+Fungsi untuk tambah, hapus, edit, dan tampilkan server
+Monitoring status server dan resource usage
+Implementasi algoritma pencarian untuk server
 
-12.views/MenuView.h & MenuView.cpp
--Tampilan menu interaktif console-based
--Navigasi dengan shortcut keyboard
--Validasi input pengguna
+-network_ctrl.h & network_ctrl.cpp
+Fungsi: Mengelola operasi perangkat jaringan dan koneksi.
+Fitur:
+Fungsi untuk tambah, hapus, edit, dan tampilkan perangkat jaringan
+Manajemen koneksi antar perangkat
+Implementasi algoritma untuk routing dan analisis topologi
 
-13.views/DataCenterView.h & DataCenterView.cpp
 
--Visualisasi layout data center dengan grafik ASCII
--Tampilan status server dan jaringan secara real-time
--Penggunaan warna dan styling untuk konsol (bila didukung)
 
-14.reports/ReportGenerator.h & ReportGenerator.cpp
--Pembuatan laporan berbagai format (teks, CSV)
--Export data untuk analisis eksternal
--Implementasi fungsi rekursif untuk laporan hirarki
+4. Folder utils/
+-fileio.h & fileio.cpp
+Fungsi: Menangani operasi file untuk penyimpanan dan pembacaan data.
+Fitur:
+Fungsi untuk menyimpan dan memuat data dari file
+Implementasi format data yang efisien (binary/text)
+Error handling untuk operasi file
 
-15.reports/Statistics.h & Statistics.cpp
--Analisis statistik penggunaan resource
--Prediksi tren penggunaan
--Perhitungan metrik performa
+-search.h & search.cpp
+Fungsi: Implementasi algoritma pencarian.
+Fitur:
+Fungsi linear search untuk pencarian umum
+Fungsi binary search untuk data terurut
+Search berdasarkan berbagai kriteria (nama, ID, status)
+
+-sort.h & sort.cpp
+
+Fungsi: Implementasi algoritma pengurutan.
+Fitur:
+Implementasi bubble sort, insertion sort untuk data sederhana
+Implementasi quick sort, merge sort (rekursif) untuk data kompleks
+Fungsi komparator untuk pengurutan berdasarkan berbagai kriteria
+
+-report.h & report.cpp
+Fungsi: Menghasilkan laporan dan analisis data.
+Fitur:
+Fungsi untuk membuat laporan teks terformat
+Fungsi export data ke format CSV
+Implementasi analisis statistik sederhana
+
+
+5. Folder data/
+-servers.dat
+Fungsi: Menyimpan data server secara persisten.
+Format: File binary atau teks terstruktur.
+
+-network.dat
+Fungsi: Menyimpan data perangkat jaringan dan topologi.
+Format: File binary atau teks terstruktur.
+
+-storage.dat
+Fungsi: Menyimpan data perangkat penyimpanan.
+Format: File binary atau teks terstruktur.
+
+-logs.txt
+Fungsi: Menyimpan log aktivitas aplikasi.
+Format: File teks dengan timestamp dan deskripsi aktivitas.
+
+6. Folder config/
+-settings.txt
+Fungsi: Menyimpan konfigurasi aplikasi.
+Format: File teks dengan pasangan key-value.
+
+7. File Root
+-main.cpp
+Fungsi: Entry point program dan "mainboard" aplikasi.
+Fitur:
+Inisialisasi komponen utama
+Loop utama aplikasi
+Pengelolaan modul yang diaktifkan/dinonaktifkan
+Penanganan menu level tertinggi
+
+-Makefile
+Fungsi: Mengatur proses kompilasi dan build aplikasi.
+Fitur:
+Aturan kompilasi untuk berbagai modul
+Opsi untuk mengaktifkan/menonaktifkan modul
+Target untuk clean, build, dan run
