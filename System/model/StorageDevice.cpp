@@ -1,3 +1,8 @@
 #include <StorageDevice.h>
 
-Storage
+StorageDevice::StorageDevice()
+{
+    id = 0;
+    NamaStorage = "";
+    Penyimpanan = 0.0;
+}

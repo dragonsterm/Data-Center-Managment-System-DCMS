@@ -1,0 +1,5 @@
+# Format: id,NamaServer,Ip,CpuUsage,RamUsage,status
+1,Server_A,192.168.1.10,35.5,8.0,1
+2,Server_B,192.168.1.11,40.0,16.0,1
+3,Server_C,192.168.1.12,20.0,4.0,0
+4,Server_D,192.168.1.13,25.0,8.0,1
