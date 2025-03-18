@@ -1,9 +1,9 @@
 DataCenterManagement/
 │
-├── src/                            # Direktori utama kode sumber
+├── System/                         # Direktori utama kode sumber
 │   ├── main.cpp                    # Entry point program, menu utama dan loop aplikasi
 │   │
-│   ├── models/                     # Direktori untuk definisi struktur data
+│   ├── model/                      # Direktori untuk definisi struktur data
 │   │   ├── DataCenter.h            # Header untuk struktur data center keseluruhan
 │   │   ├── DataCenter.cpp          # Implementasi struktur data center
 │   │   ├── Server.h                # Header untuk definisi Server struct
