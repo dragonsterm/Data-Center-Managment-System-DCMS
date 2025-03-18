@@ -1,0 +1,22 @@
+===== DATA CENTER MANAGEMENT SYSTEM =====
+[Current Date & Time: akan ada features yang memanggil waktu]
+
+┌───────────────────────────────────────┐
+│          MENU UTAMA                   │
+├───────────────────────────────────────┤
+│  1. Manajemen Data Center             │
+│  2. Manajemen Server                  │
+│  3. Manajemen Jaringan                │
+│  4. Manajemen Penyimpanan             │
+│  5. Laporan & Analisis                │
+│  6. Pengaturan Sistem                 │
+│  7. Bantuan & Dokumentasi             │
+│  9. Keluar                            │
+└───────────────────────────────────────┘
+
+Status Sistem:
+- Servers Aktif: tba
+- Storage Tersedia: tba
+- Status Jaringan: tba
+
+Pilih menu [1 - Tergantung Jumlah Menu]:
