@@ -1,72 +1,50 @@
 DataCenterManagement/
 │
-├── System/                         # Direktori utama kode sumber
-│   ├── main.cpp                    # Entry point program, menu utama dan loop aplikasi
-│   │
-│   ├── model/                      # Direktori untuk definisi struktur data
-│   │   ├── DataCenter.h            # Header untuk struktur data center keseluruhan
-│   │   ├── DataCenter.cpp          # Implementasi struktur data center
-│   │   ├── Server.h                # Header untuk definisi Server struct
-│   │   ├── Server.cpp              # Implementasi Server struct
-│   │   ├── Rack.h                  # Header untuk definisi Rack (rak server)
-│   │   ├── Rack.cpp                # Implementasi struktur Rack
-│   │   ├── NetworkDevice.h         # Header untuk perangkat jaringan
-│   │   ├── NetworkDevice.cpp       # Implementasi perangkat jaringan
-│   │   ├── StorageDevice.h         # Header untuk perangkat penyimpanan
-│   │   └── StorageDevice.cpp       # Implementasi perangkat penyimpanan
-│   │
-│   ├── utils/                      # Utilitas dan fungsi bantuan
-│   │   ├── FileManager.h           # Header untuk pengelolaan file
-│   │   ├── FileManager.cpp         # Implementasi operasi file (baca/tulis)
-│   │   ├── SearchAlgorithms.h      # Header untuk algoritma pencarian
-│   │   ├── SearchAlgorithms.cpp    # Implementasi algoritma pencarian
-│   │   ├── SortAlgorithms.h        # Header untuk algoritma pengurutan
-│   │   ├── SortAlgorithms.cpp      # Implementasi algoritma pengurutan
-│   │   ├── DataStructures.h        # Struktur data tambahan (linked list, dll)
-│   │   └── DataStructures.cpp      # Implementasi struktur data tambahan
-│   │
-│   ├── controllers/                # Pengelola komponen data center
-│   │   ├── DataCenterController.h  # Header pengelolaan data center utama
-│   │   ├── DataCenterController.cpp# Implementasi pengelolaan data center
-│   │   ├── ServerController.h      # Header pengelolaan server
-│   │   ├── ServerController.cpp    # Implementasi pengelolaan server
-│   │   ├── NetworkController.h     # Header pengelolaan jaringan
-│   │   ├── NetworkController.cpp   # Implementasi pengelolaan jaringan
-│   │   ├── StorageController.h     # Header pengelolaan penyimpanan
-│   │   └── StorageController.cpp   # Implementasi pengelolaan penyimpanan
-│   │
-│   ├── views/                      # Tampilan konsol
-│   │   ├── MenuView.h              # Header untuk menu utama
-│   │   ├── MenuView.cpp            # Implementasi menu utama
-│   │   ├── DataCenterView.h        # Header tampilan data center
-│   │   ├── DataCenterView.cpp      # Implementasi tampilan data center
-│   │   ├── ReportView.h            # Header untuk laporan/reporting
-│   │   └── ReportView.cpp          # Implementasi tampilan laporan
-│   │
-│   └── reports/                    # Modul laporan dan analisis
-│       ├── ReportGenerator.h       # Header untuk generator laporan
-│       ├── ReportGenerator.cpp     # Implementasi generator laporan
-│       ├── Statistics.h            # Header untuk fungsi statistik
-│       └── Statistics.cpp          # Implementasi analisis statistik
+├── main.cpp                  # "Mainboard" utama, program entry point
 │
-├── data/                           # Direktori untuk penyimpanan data
-│   ├── datacenter.dat              # Data konfigurasi data center
-│   ├── servers.dat                 # Data server
-│   ├── network.dat                 # Data perangkat jaringan
-│   ├── storage.dat                 # Data perangkat penyimpanan
-│   ├── logs/                       # Direktori untuk file log
-│   │   ├── system.log              # Log sistem
-│   │   └── audit.log               # Log audit untuk tracking perubahan
-│   └── reports/                    # Direktori untuk laporan yang diekspor
+├── models/                   # Folder untuk semua struktur data/model
+│   ├── datacenter.h          # Struktur utama data center
+│   ├── datacenter.cpp        # Implementasi struktur data center
+│   ├── server.h              # Struktur data untuk server
+│   ├── server.cpp            # Implementasi server
+│   ├── network.h             # Struktur data untuk perangkat jaringan
+│   ├── network.cpp           # Implementasi perangkat jaringan
+│   └── storage.h             # Struktur data untuk perangkat penyimpanan
+│   └── storage.cpp           # Implementasi perangkat penyimpanan
 │
-├── include/                        # Header pihak ketiga atau eksternal
+├── views/                    # Folder untuk tampilan dan interaksi user
+│   ├── menu.h                # Header untuk sistem menu
+│   ├── menu.cpp              # Implementasi menu aplikasi
+│   ├── display.h             # Header untuk fungsi tampilan
+│   ├── display.cpp           # Implementasi tampilan data center
+│   ├── input.h               # Header untuk fungsi input
+│   └── input.cpp             # Implementasi validasi dan pengambilan input
 │
-├── lib/                            # Library pihak ketiga (jika ada)
+├── controllers/              # Folder untuk logic pengontrol
+│   ├── datacenter_ctrl.h     # Kontroler untuk data center
+│   ├── datacenter_ctrl.cpp   # Implementasi kontroler data center
+│   ├── server_ctrl.h         # Kontroler untuk server
+│   ├── server_ctrl.cpp       # Implementasi kontroler server
+│   ├── network_ctrl.h        # Kontroler untuk jaringan
+│   └── network_ctrl.cpp      # Implementasi kontroler jaringan
 │
-├── docs/                           # Dokumentasi
-│   ├── manual.txt                  # Manual penggunaan
-│   └── diagrams/                   # Diagram struktur program
+├── utils/                    # Folder untuk fungsi utilitas
+│   ├── fileio.h              # Header untuk operasi file
+│   ├── fileio.cpp            # Implementasi operasi file
+│   ├── search.h              # Header untuk algoritma pencarian
+│   ├── search.cpp            # Implementasi algoritma pencarian
+│   ├── sort.h                # Header untuk algoritma pengurutan
+│   ├── sort.cpp              # Implementasi algoritma pengurutan
+│   ├── report.h              # Header untuk pembuatan laporan
+│   └── report.cpp            # Implementasi pembuatan laporan
 │
-├── Makefile                        # File konfigurasi build manual
+├── data/                     # Folder untuk file data
+│   ├── servers.dat           # Data server
+│   ├── network.dat           # Data jaringan
+│   ├── storage.dat           # Data penyimpanan
+│   └── logs.txt              # File log aktivitas
 │
-└── README.md                       # Dokumentasi dasar project
+├── config/                   # Folder untuk konfigurasi
+│   └── settings.txt          # File konfigurasi aplikasi
+│
+└── Makefile                  # File untuk kompilasi
