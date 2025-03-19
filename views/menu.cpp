@@ -35,7 +35,8 @@ void MenuManager::tambahMenuItem(int menuindex, const std::string& nama, const s
 
 void MenuManager::displayHeader() 
 {
-    std::cout << "===== DATA CENTER MANAGEMENT SYSTEM =====" << std::endl;
+    std::cout << "===== SYSTEM MANAGEMENT DATA CENTER =====" << std::endl;
+    std::cout << "===== SMDC V 0.3 (Unreleased) #2025 =====" << std::endl;
     
     time_t now = time(0);
     tm* localTime = localtime(&now);
@@ -62,7 +63,7 @@ void MenuManager::displayMenu(int menuindex)
         system("cls");
         displayHeader();
         
-        // Menu box width - adjust this if needed
+        // Lebar box menu bisa diatur
         const int boxWidth = 39; 
         const std::string horizontalLine = "+-------------------------------------+";
         
@@ -82,7 +83,7 @@ void MenuManager::displayMenu(int menuindex)
             menuLine += std::string(itemPadding, ' ') + "|";
             std::cout << menuLine << std::endl;
         }
-        std::string exitLine = "|  9. Keluar";
+        std::string exitLine = "|  0. Keluar";
         int exitPadding = boxWidth - exitLine.length() - 1;
         exitLine += std::string(exitPadding, ' ') + "|";
         std::cout << exitLine << std::endl;
@@ -109,7 +110,9 @@ void MenuManager::setMenuSekarang(int menuindex)
 int MenuManager::getPilihanMenu() 
 {
     int pilihan;
-    std::cout << "\nPilih menu [1-" << menus[MenuSekarang].items.size() << " atau 9]: ";
+    std::cout << "\nPilih menu [1-" << menus[MenuSekarang].items.size() << " atau 0]: ";
+
+    // Validasi Input
     while (!(std::cin >> pilihan))
     {
         std::cin.clear();

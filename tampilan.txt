@@ -1,4 +1,5 @@
 ===== DATA CENTER MANAGEMENT SYSTEM =====
+===== SMDC V 0.3 (Unreleased) #2025 =====
 [Current Date & Time: akan ada features yang memanggil waktu]
 
 ┌───────────────────────────────────────┐
@@ -13,7 +14,6 @@
 │  7. Bantuan & Dokumentasi             │
 │  9. Keluar                            │
 └───────────────────────────────────────┘
-
 Status Sistem:
 - Servers Aktif: tba
 - Storage Tersedia: tba

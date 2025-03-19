@@ -1,15 +1,21 @@
 #include <iostream>
 #include <limits>
 #include "views/menu.h"
+#include "views/display.h"
 
-
-int main() {
+int main()
+{
     MenuManager menuManager;
+    Display display;
 
-    menuManager.tambahMenuItem(0, "Manajemen Server Center", "");
-    menuManager.tambahMenuItem(0, "Utility", "");
-    menuManager.tambahMenuItem(0, "Laporan", "");
-    menuManager.tambahMenuItem(0, "Pengaturan System", "");
+    // Setup menu items according to tampilan.txt
+    menuManager.tambahMenuItem(0, "Manajemen Data Center", "");
+    menuManager.tambahMenuItem(0, "Manajemen Server", "");
+    menuManager.tambahMenuItem(0, "Manajemen Jaringan", "");
+    menuManager.tambahMenuItem(0, "Manajemen Penyimpanan", "");
+    menuManager.tambahMenuItem(0, "Laporan & Analisis", "");
+    menuManager.tambahMenuItem(0, "Pengaturan Sistem", "");
+    menuManager.tambahMenuItem(0, "Bantuan & Dokumentasi", "");
 
     bool run = true;
 
@@ -20,28 +26,70 @@ int main() {
 
         switch (pilihan)
         {
-            case 1:
-                std::cout << "Manajemen Server Center" << std::endl;
-                break;
-            case 2:
-                std::cout << "Utility" << std::endl;
-                break;
-            case 3:
-                std::cout << "Laporan" << std::endl;
-                break;
-            case 4:
-                std::cout << "Pengaturan System" << std::endl;
-                break;
-            case 9:
-                std::cout << "Keluar dari aplikasi" << std::endl;
-                run = false;
-                break;
-            default:
-                std::cout << "Pilihan tidak valid\n\n";
-                std::cout << "Press Enter to continue...";
-                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-                std::cin.get();
-                break;
+        case 1:
+        {
+            display.displayLoading("Loading"); // Nanti akan di add kesemua case
+            display.clearScreen();
+            display.displayDataCenterLayout();
+            system("pause");
+            break;
+        }
+        case 2:
+        {
+            display.clearScreen();
+            display.displayServerTable();
+            system("pause");
+            break;
+        }
+        case 3:
+        {
+            display.clearScreen();
+            display.displayNetworkTable();
+            system("pause");
+            break;
+        }
+        case 4:
+        {
+            display.clearScreen();
+            display.displayStorageTable();
+            system("pause");
+            break;
+        }
+        case 5:
+        {
+            display.clearScreen();
+            display.displayHeader("LAPORAN & ANALISIS");
+            display.displaySystemStatus();
+            system("pause");
+            ;
+            break;
+        }
+        case 6:
+        {
+            display.clearScreen();
+            display.displayHeader("PENGATURAN SISTEM");
+            std::cout << "\nPengaturan Sistem (Fitur belum diimplementasikan)\n"
+                      << std::endl;
+            system("pause");
+            break;
+        }
+        case 7:
+        {
+            display.clearScreen();
+            display.displayHeader("BANTUAN & DOKUMENTASI");
+            std::cout << "\nBantuan & Dokumentasi (Fitur belum diimplementasikan)\n"
+                      << std::endl;
+            system("pause");
+            break;
+        }
+        case 0:
+            display.displayLoading("Menutup aplikasi");
+            system("pause");
+            run = false;
+            break;
+        default:
+            display.displayError("Pilihan tidak valid");
+            break;
         }
     }
     return 0;
