@@ -8,7 +8,6 @@ int main()
     MenuManager menuManager;
     Display display;
 
-    // Setup menu items according to tampilan.txt
     menuManager.tambahMenuItem(0, "Manajemen Data Center", "");
     menuManager.tambahMenuItem(0, "Manajemen Server", "");
     menuManager.tambahMenuItem(0, "Manajemen Jaringan", "");
