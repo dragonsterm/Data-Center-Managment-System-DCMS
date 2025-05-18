@@ -9,147 +9,110 @@ List Materi yang akan ada di dalam Project Pemrograman
 
 Penjelasan Fitur dan Kegunaan:
 
-1. Folder models/
--datacenter.h & datacenter.cpp
-Fungsi: Mendefinisikan struktur utama DataCenter yang menjadi wadah untuk semua komponen.
-Fitur:
-Struct DataCenter dengan array multi-dimensi untuk layout ruangan
-Fungsi inisialisasi dan manajemen data center
-Penggunaan pointer untuk menghubungkan berbagai komponen data center
+Struktur Data (Struct)
+1. ServerUnit
+    Merepresentasikan satu server dalam sebuah rak
+    Berisi informasi tentang jenis server, status, persentase utilisasi, kapasitas penyimpanan, dan penyimpanan yang tersedia
 
--server.h & server.cpp
-Fungsi: Mendefinisikan struktur Server dan koleksi server.
-Fitur:
-Struct Server dengan properti (ID, nama, spesifikasi, status)
-Array untuk menyimpan koleksi server
-Fungsi untuk memeriksa status dan kondisi server
+2.ServerRack
+    Merepresentasikan rak yang berisi beberapa unit server
+    Berisi informasi tentang lokasi rak, kapasitas, dan array objek ServerUnit
 
--network.h & network.cpp
-Fungsi: Mendefinisikan perangkat jaringan dan topologi koneksi.
-Fitur:
-Struct NetworkDevice (router, switch, dll)
-Matriks adjacency untuk representasi koneksi antar perangkat
-Implementasi pointer untuk struktur topologi jaringan
+3.DataCenter
+    Struktur data utama yang merepresentasikan seluruh data center
+    Berisi array multi-dimensi dari objek ServerRack untuk merepresentasikan zona/ruangan yang berbeda
 
--storage.h & storage.cpp
-Fungsi: Mendefinisikan perangkat penyimpanan dan management kapasitas.
-Fitur:
-Struct StorageDevice dengan properti (kapasitas, tipe, status)
-Fungsi untuk mengelola space dan monitoring perangkat storage
+Fungsi Utama
+Fungsi Manajemen Data
+1.initializeDataCenter()
+    Menginisialisasi struktur data center dengan nilai default
+    Menyiapkan array multi-dimensi yang merepresentasikan rak server dan ruangan
 
+2.addServer()
+    Menambahkan server baru ke lokasi rak tertentu
+    Memperbarui struktur data terkait
 
-2. Folder views/
--menu.h & menu.cpp
-Fungsi: Menampilkan dan mengelola sistem menu aplikasi.
-Fitur:
-Struktur Menu dengan opsi dan sub-menu
-Fungsi tampilan menu dengan format dan highlight
-Sistem navigasi antar menu dan sub-menu
+3.removeServer()
+    Menghapus server dari lokasi rak tertentu
+    Memperbarui struktur data terkait
 
--display.h & display.cpp
-Fungsi: Menampilkan data dan visualisasi ke layar.
-Fitur:
-Fungsi untuk menampilkan tabel data
-Visualisasi status data center dengan ASCII art
-Format tampilan yang user-friendly
+4.updateServerStatus()
+    Memperbarui status server (online, offline, maintenance)
+    Mengubah metrik utilisasi sesuai dengan status
 
--input.h & input.cpp
-Fungsi: Menangani input pengguna dan validasi.
-Fitur:
-Fungsi untuk mengambil dan memvalidasi berbagai jenis input
-Handling error untuk input yang tidak valid
-Bantuan input untuk pengguna
+5.updateServerUtilization()
+    Memperbarui utilisasi CPU, memori, atau penyimpanan server
 
+Operasi File
+1.saveDataToFile()
+    Menyimpan kondisi data center saat ini ke file lokal
+Menggunakan operasi file untuk menulis data terstruktur
 
-3. Folder controllers/
--datacenter_ctrl.h & datacenter_ctrl.cpp
-Fungsi: Mengelola logika bisnis utama untuk data center.
-Fitur:
-Fungsi inisialisasi dan konfigurasi data center
-Koordinasi antar berbagai komponen
-Manajemen kapasitas dan resource data center
+2.loadDataFromFile()
+    Memuat kondisi data center yang sebelumnya disimpan dari file
+Mengurai file dan mengisi struktur data
 
--server_ctrl.h & server_ctrl.cpp
-Fungsi: Mengelola operasi server dan implementasi CRUD.
-Fitur:
-Fungsi untuk tambah, hapus, edit, dan tampilkan server
-Monitoring status server dan resource usage
-Implementasi algoritma pencarian untuk server
+Searching
+1. findServerByType()
+    Mencari server dengan jenis tertentu
+Mengembalikan lokasi server yang cocok
 
--network_ctrl.h & network_ctrl.cpp
-Fungsi: Mengelola operasi perangkat jaringan dan koneksi.
-Fitur:
-Fungsi untuk tambah, hapus, edit, dan tampilkan perangkat jaringan
-Manajemen koneksi antar perangkat
-Implementasi algoritma untuk routing dan analisis topologi
+2.findAvailableStorage()
+    Mencari server dengan penyimpanan tersedia di atas ambang batas tertentu
+    Mengembalikan lokasi dan kapasitas yang tersedia
+
+3.findServersByStatus()
+    Mencari server berdasarkan status operasionalnya
+
+Sorting
+1.insertionSortServersAscending()
+    Mengurutkan server berdasarkan kriteria tertentu (utilisasi, penyimpanan tersedia) secara ascending
+    Mengimplementasikan algoritma insertion sort
+
+2.quickSortServersDescending()
+    Mengurutkan server berdasarkan kriteria tertentu secara descending
+    Mengimplementasikan algoritma quick sort
+
+Fungsi Visualisasi
+1.displayDataCenterMap()
+    Memvisualisasikan tata letak keseluruhan data center
+    Menampilkan zona dan ruangan yang berbeda
 
 
+2.displayRackView()
+    Memvisualisasikan rak tertentu dengan server-servernya
+    Menampilkan informasi status, jenis, dan utilisasi
 
-4. Folder utils/
--fileio.h & fileio.cpp
-Fungsi: Menangani operasi file untuk penyimpanan dan pembacaan data.
-Fitur:
-Fungsi untuk menyimpan dan memuat data dari file
-Implementasi format data yang efisien (binary/text)
-Error handling untuk operasi file
+3.displayServerDetails()
+    Menampilkan informasi detail tentang server yang dipilih
+    Termasuk jenis, status, metrik utilisasi, dan informasi penyimpanan
 
--search.h & search.cpp
-Fungsi: Implementasi algoritma pencarian.
-Fitur:
-Fungsi linear search untuk pencarian umum
-Fungsi binary search untuk data terurut
-Search berdasarkan berbagai kriteria (nama, ID, status)
+Fungsi Rekursif
+1.calculateTotalStorageRecursive()
+    Menghitung total penyimpanan secara rekursif di bagian tertentu data center
+    Mendemonstrasikan penggunaan fungsi rekursif
 
--sort.h & sort.cpp
+2.traverseDataCenterRecursive()
+    Melakukan traversal struktur data center secara rekursif untuk pelaporan atau analisis
+    Dapat digunakan untuk pencarian atau agregasi kompleks
 
-Fungsi: Implementasi algoritma pengurutan.
-Fitur:
-Implementasi bubble sort, insertion sort untuk data sederhana
-Implementasi quick sort, merge sort (rekursif) untuk data kompleks
-Fungsi komparator untuk pengurutan berdasarkan berbagai kriteria
+Fungsi Berbasis Pointer
+1.swapServers()
+    Menggunakan pointer untuk menukar dua server antar lokasi
+    Mendemonstrasikan penggunaan pointer untuk efisiensi memori
 
--report.h & report.cpp
-Fungsi: Menghasilkan laporan dan analisis data.
-Fitur:
-Fungsi untuk membuat laporan teks terformat
-Fungsi export data ke format CSV
-Implementasi analisis statistik sederhana
+2.optimizeRackSpace()
+    Mengatur ulang server dalam rak menggunakan operasi pointer untuk optimasi
+    Memindahkan server berdasarkan pola utilisasi
 
+Fungsi Pembantu
+1.generateReports()
+    Menghasilkan laporan penggunaan dan statistik tentang data center
 
-5. Folder data/
--servers.dat
-Fungsi: Menyimpan data server secara persisten.
-Format: File binary atau teks terstruktur.
+2.validateServerPlacement()
+    Memeriksa apakah server dapat ditempatkan di lokasi tertentu
+    Memverifikasi batasan fisik dan logis
 
--network.dat
-Fungsi: Menyimpan data perangkat jaringan dan topologi.
-Format: File binary atau teks terstruktur.
-
--storage.dat
-Fungsi: Menyimpan data perangkat penyimpanan.
-Format: File binary atau teks terstruktur.
-
--logs.txt
-Fungsi: Menyimpan log aktivitas aplikasi.
-Format: File teks dengan timestamp dan deskripsi aktivitas.
-
-6. Folder config/
--settings.txt
-Fungsi: Menyimpan konfigurasi aplikasi.
-Format: File teks dengan pasangan key-value.
-
-7. File Root
--main.cpp
-Fungsi: Entry point program dan "mainboard" aplikasi.
-Fitur:
-Inisialisasi komponen utama
-Loop utama aplikasi
-Pengelolaan modul yang diaktifkan/dinonaktifkan
-Penanganan menu level tertinggi
-
--Makefile
-Fungsi: Mengatur proses kompilasi dan build aplikasi.
-Fitur:
-Aturan kompilasi untuk berbagai modul
-Opsi untuk mengaktifkan/menonaktifkan modul
-Target untuk clean, build, dan run
+3.calculateUtilizationMetrics()
+    Menghitung berbagai metrik utilisasi untuk pelaporan
+    Mungkin menggunakan teknik rekursif untuk perhitungan kompleks

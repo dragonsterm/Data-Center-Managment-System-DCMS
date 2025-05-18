@@ -22,6 +22,9 @@ Devolpement System Managment Data Denter SDMC
         - Added datacenter.h, network.h, server.h, storage.h = Empty header file akan ditambahkan nanti
         - Modified Main.cpp = memperbarui display agar sesuai dengan tampilan.txt
         - Modified datacenter_management.exe = Program build versi terbaru dengan semua feature yang ditambakn di update 0.3 
+- 0.4 = Full Base Code Rework following Requirement
+        - Removed Everything except .gitignore
+        -
 
 
 (released) Version History <aiming for v 1.0 Released>

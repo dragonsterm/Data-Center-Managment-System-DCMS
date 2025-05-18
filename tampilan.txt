@@ -1,22 +1,22 @@
 ===== DATA CENTER MANAGEMENT SYSTEM =====
-===== SMDC V 0.3 (Unreleased) #2025 =====
-[Current Date & Time: akan ada features yang memanggil waktu]
+===== DCMS V 0.4 (Unreleased) #2025 =====
+[Current Date & Time: 18/05/2025 14:32:45]
 
 ┌───────────────────────────────────────┐
 │          MENU UTAMA                   │
 ├───────────────────────────────────────┤
-│  1. Manajemen Data Center             │
+│  1. Visualisasi Data Center           │
 │  2. Manajemen Server                  │
-│  3. Manajemen Jaringan                │
-│  4. Manajemen Penyimpanan             │
-│  5. Laporan & Analisis                │
-│  6. Pengaturan Sistem                 │
-│  7. Bantuan & Dokumentasi             │
-│  9. Keluar                            │
+│  3. Pencarian & Filter                │
+│  4. Pengurutan Data                   │
+│  5. Laporan & Statistik               │
+│  6. Backup & Restore Data             │
+│  7. Optimasi Penataan Rak             │
+│  8. Keluar                            │
 └───────────────────────────────────────┘
 Status Sistem:
-- Servers Aktif: tba
-- Storage Tersedia: tba
-- Status Jaringan: tba
+- Servers Aktif: TBA
+- Storage Tersedia: TBA
+- Utilisasi Rata-rata: TBA
 
-Pilih menu [1 - Tergantung Jumlah Menu]:
+Pilih menu [1-8]:
