@@ -52,9 +52,10 @@ DataCenterManagementSystem.cpp
 - **displayServerDetails()** - Menampilkan detail lengkap server tertentu
 
 #### Fungsi Pencarian (Searching)
-- **findServerByType()** - Mencari server berdasarkan jenisnya
-- **findAvailableStorage()** - Mencari server dengan storage tersedia
-- **findServersByStatus()** - Mencari server berdasarkan status
+- **findServerByType()** - Mencari server berdasarkan jenisnya (sentinel)
+- **findAvailableStorage()** - Mencari server dengan storage tersedia (Binary Search)
+- **findServersByStatus()** - Mencari server berdasarkan status bin (Non-Sentinel)
+- **findServerById()** - Mencari Server bedasarkan ID (Binary Search)
 
 #### Fungsi Pengurutan (Sorting)
 - **insertionSortServersAscending()** - Mengurutkan naik dengan insertion sort

@@ -55,14 +55,21 @@ Mengurai file dan mengisi struktur data
 Searching
 1. findServerByType()
     Mencari server dengan jenis tertentu
-Mengembalikan lokasi server yang cocok
+    Mengembalikan lokasi server yang cocok
+    Menggunakan Setinel
 
 2.findAvailableStorage()
     Mencari server dengan penyimpanan tersedia di atas ambang batas tertentu
     Mengembalikan lokasi dan kapasitas yang tersedia
+    menggunakan Binary Search
 
 3.findServersByStatus()
     Mencari server berdasarkan status operasionalnya
+    Menggunakan nonsentinel
+
+4.findServerById()
+    Mencari server berdasarkan idnya
+    Menggunakan Binary Search
 
 Sorting
 1.insertionSortServersAscending()

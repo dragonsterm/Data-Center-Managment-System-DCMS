@@ -1,4 +1,4 @@
-Devolpement System Managment Data Denter SDMC
+Devolpement Data Center Managment System DCMS
 
 (unreleased) version History
 - 0.1 = Systems Rework and Redesign
@@ -23,8 +23,16 @@ Devolpement System Managment Data Denter SDMC
         - Modified Main.cpp = memperbarui display agar sesuai dengan tampilan.txt
         - Modified datacenter_management.exe = Program build versi terbaru dengan semua feature yang ditambakn di update 0.3 
 - 0.4 = Full Base Code Rework following Requirement
-        - Removed Everything except .gitignore
-        -
+        - Added DataCenterManagement.cpp *will be refered as BaseCode
+        - Added DataCenterMangement.exe
+        - Added Working Main menu in BaseCode
+        - Added Get Local Time in BaseCode
+        - Added Various PlaceHolder
+        - Added Function For Proccesing Choice *Still WIP
+        - Modified Structure.md
+        - Modified tampilan.txt
+        - Modified Fungsi.txt
+        - Removed Everything in V 0.3 except .gitignore
 
 
 (released) Version History <aiming for v 1.0 Released>
