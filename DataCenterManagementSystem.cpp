@@ -177,7 +177,7 @@ void initializeDataCenter()
     customServer1.ram = 128;
     customServer1.ipAddress = "192.168.1.100";
 
-    dataCenter.rack[0][3].server.push_back(customServer1);
+    dataCenter.rack[0][3].server.push_back(customServer1); // {1,4} (koordinat 0,3)
 }
 
 // fungsi mendapatkan waktu saat ini lewat lokal
@@ -200,10 +200,9 @@ void mainMenu()
     do
     {
         // system("cls"); // Clear the console (Windows) ***Disabled sementara selama pengembangan***
-
         // Diplay Header
         cout << "===== DATA CENTER MANAGEMENT SYSTEM =====" << endl;
-        cout << "===== DCMS V 0.4 (Unreleased) #2025 =====" << endl;
+        cout << "===== DCMS V 0.5 (Unreleased) #2025 =====" << endl;
         cout << "[Current Date & Time: " << getCurrentDateTime() << "]" << endl
              << endl;
 
@@ -614,6 +613,7 @@ void displayRackView()
         }
     } else 
     {
+        exit = true;
         cout << "Tidak ada server dalam rack ini." << endl;
         cout << "\nTekan Enter untuk kembali...";
         cin.ignore();

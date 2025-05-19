@@ -33,6 +33,13 @@ Devolpement Data Center Managment System DCMS
         - Modified tampilan.txt
         - Modified Fungsi.txt
         - Removed Everything in V 0.3 except .gitignore
+- 0.5 = Struct and Display Update
+        - Added struct DataCenter, ServerRack, ServerUnit
+        - Added displayDataCenterMap, displayRackView, displayRackView
+        - Modified mainMenu to start tracking the server
+        - Modified Structure.md
+        - Modified .gitignore
+        - Modified Fungsi.txt
 
 
 (released) Version History <aiming for v 1.0 Released>
