@@ -243,7 +243,7 @@ void startMenu()
     {
         system("cls");
         cout << "===== DATA CENTER MANAGEMENT SYSTEM =====" << endl;
-        cout << "===== DCMS V 0.5 (Unreleased) #2025 =====" << endl;
+        cout << "===== DCMS V 0.7 (Unreleased) #2025 =====" << endl;
         cout << "[Current Date & Time: " << getCurrentDateTime() << "]" << endl << endl;
         cout << "+---------------------------------------+" << endl;
         cout << "|             START MENU                |" << endl;
@@ -634,7 +634,7 @@ void mainMenu()
         system("cls");
         // Diplay Header
         cout << "===== DATA CENTER MANAGEMENT SYSTEM =====" << endl;
-        cout << "===== DCMS V 0.5 (Unreleased) #2025 =====" << endl;
+        cout << "===== DCMS V 0.7 (Unreleased) #2025 =====" << endl;
         cout << "[Current Date & Time: " << getCurrentDateTime() << "]" << endl
              << endl;
 
