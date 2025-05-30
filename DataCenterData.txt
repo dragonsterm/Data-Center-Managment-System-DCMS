@@ -1,0 +1,550 @@
+DATA_CENTER_INFO
+Default Data Center
+Unrecognized Location
+END_DATA_CENTER_INFO
+RACK_DATA
+RACK 0 0
+R1-C1
+Zone 1
+5
+1
+2
+SERVER
+WEB-001
+0
+1
+0
+100
+100
+Generic Server Device
+4
+16
+1.0.0.1
+END_SERVER
+SERVER
+DB-001
+1
+1
+0
+100
+100
+Generic Server Device
+4
+16
+1.0.0.1
+END_SERVER
+END_RACK
+RACK 0 1
+R1-C2
+Zone 1
+5
+1
+0
+END_RACK
+RACK 0 2
+R1-C3
+Zone 1
+5
+1
+0
+END_RACK
+RACK 0 3
+R1-C4
+Zone 1
+5
+1
+1
+SERVER
+WEB-004
+0
+1
+75.5
+2000
+1000
+Skibidi T01LET
+24
+128
+192.168.1.100
+END_SERVER
+END_RACK
+RACK 0 4
+R1-C5
+Zone 1
+5
+1
+0
+END_RACK
+RACK 0 5
+R1-C6
+Zone 1
+5
+1
+0
+END_RACK
+RACK 0 6
+R1-C7
+Zone 1
+5
+1
+0
+END_RACK
+RACK 0 7
+R1-C8
+Zone 1
+5
+1
+0
+END_RACK
+RACK 1 0
+R2-C1
+Zone 1
+5
+1
+1
+SERVER
+APP-001
+2
+1
+0
+100
+100
+Generic Server Device
+4
+16
+1.0.0.1
+END_SERVER
+END_RACK
+RACK 1 1
+R2-C2
+Zone 1
+5
+1
+0
+END_RACK
+RACK 1 2
+R2-C3
+Zone 1
+5
+1
+0
+END_RACK
+RACK 1 3
+R2-C4
+Zone 1
+5
+1
+1
+SERVER
+FILE-001
+3
+1
+0
+100
+100
+Generic Server Device
+4
+16
+1.0.0.1
+END_SERVER
+END_RACK
+RACK 1 4
+R2-C5
+Zone 1
+5
+1
+0
+END_RACK
+RACK 1 5
+R2-C6
+Zone 1
+5
+1
+0
+END_RACK
+RACK 1 6
+R2-C7
+Zone 1
+5
+1
+0
+END_RACK
+RACK 1 7
+R2-C8
+Zone 1
+5
+1
+0
+END_RACK
+RACK 2 0
+R3-C1
+Zone 2
+5
+1
+0
+END_RACK
+RACK 2 1
+R3-C2
+Zone 2
+5
+1
+0
+END_RACK
+RACK 2 2
+R3-C3
+Zone 2
+5
+1
+0
+END_RACK
+RACK 2 3
+R3-C4
+Zone 2
+5
+1
+0
+END_RACK
+RACK 2 4
+R3-C5
+Zone 2
+5
+1
+0
+END_RACK
+RACK 2 5
+R3-C6
+Zone 2
+5
+1
+0
+END_RACK
+RACK 2 6
+R3-C7
+Zone 2
+5
+1
+0
+END_RACK
+RACK 2 7
+R3-C8
+Zone 2
+5
+1
+0
+END_RACK
+RACK 3 0
+R4-C1
+Zone 2
+5
+1
+0
+END_RACK
+RACK 3 1
+R4-C2
+Zone 2
+5
+1
+0
+END_RACK
+RACK 3 2
+R4-C3
+Zone 2
+5
+1
+0
+END_RACK
+RACK 3 3
+R4-C4
+Zone 2
+5
+1
+1
+SERVER
+WEB-002
+0
+1
+0
+100
+100
+Generic Server Device
+4
+16
+1.0.0.1
+END_SERVER
+END_RACK
+RACK 3 4
+R4-C5
+Zone 2
+5
+1
+0
+END_RACK
+RACK 3 5
+R4-C6
+Zone 2
+5
+1
+0
+END_RACK
+RACK 3 6
+R4-C7
+Zone 2
+5
+1
+0
+END_RACK
+RACK 3 7
+R4-C8
+Zone 2
+5
+1
+0
+END_RACK
+RACK 4 0
+R5-C1
+Zone 3
+5
+1
+0
+END_RACK
+RACK 4 1
+R5-C2
+Zone 3
+5
+1
+0
+END_RACK
+RACK 4 2
+R5-C3
+Zone 3
+5
+1
+0
+END_RACK
+RACK 4 3
+R5-C4
+Zone 3
+5
+1
+0
+END_RACK
+RACK 4 4
+R5-C5
+Zone 3
+5
+1
+0
+END_RACK
+RACK 4 5
+R5-C6
+Zone 3
+5
+1
+0
+END_RACK
+RACK 4 6
+R5-C7
+Zone 3
+5
+1
+0
+END_RACK
+RACK 4 7
+R5-C8
+Zone 3
+5
+1
+0
+END_RACK
+RACK 5 0
+R6-C1
+Zone 3
+5
+1
+0
+END_RACK
+RACK 5 1
+R6-C2
+Zone 3
+5
+1
+0
+END_RACK
+RACK 5 2
+R6-C3
+Zone 3
+5
+1
+0
+END_RACK
+RACK 5 3
+R6-C4
+Zone 3
+5
+1
+0
+END_RACK
+RACK 5 4
+R6-C5
+Zone 3
+5
+1
+0
+END_RACK
+RACK 5 5
+R6-C6
+Zone 3
+5
+1
+0
+END_RACK
+RACK 5 6
+R6-C7
+Zone 3
+5
+1
+0
+END_RACK
+RACK 5 7
+R6-C8
+Zone 3
+5
+1
+0
+END_RACK
+RACK 6 0
+R7-C1
+Zone 4
+5
+1
+1
+SERVER
+DB-002
+1
+1
+0
+100
+100
+Generic Server Device
+4
+16
+1.0.0.1
+END_SERVER
+END_RACK
+RACK 6 1
+R7-C2
+Zone 4
+5
+1
+0
+END_RACK
+RACK 6 2
+R7-C3
+Zone 4
+5
+1
+0
+END_RACK
+RACK 6 3
+R7-C4
+Zone 4
+5
+1
+1
+SERVER
+WEB-003
+0
+1
+0
+100
+100
+Generic Server Device
+4
+16
+1.0.0.1
+END_SERVER
+END_RACK
+RACK 6 4
+R7-C5
+Zone 4
+5
+1
+0
+END_RACK
+RACK 6 5
+R7-C6
+Zone 4
+5
+1
+0
+END_RACK
+RACK 6 6
+R7-C7
+Zone 4
+5
+1
+0
+END_RACK
+RACK 6 7
+R7-C8
+Zone 4
+5
+1
+0
+END_RACK
+RACK 7 0
+R8-C1
+Zone 4
+5
+1
+0
+END_RACK
+RACK 7 1
+R8-C2
+Zone 4
+5
+1
+0
+END_RACK
+RACK 7 2
+R8-C3
+Zone 4
+5
+1
+0
+END_RACK
+RACK 7 3
+R8-C4
+Zone 4
+5
+1
+0
+END_RACK
+RACK 7 4
+R8-C5
+Zone 4
+5
+1
+0
+END_RACK
+RACK 7 5
+R8-C6
+Zone 4
+5
+1
+0
+END_RACK
+RACK 7 6
+R8-C7
+Zone 4
+5
+1
+0
+END_RACK
+RACK 7 7
+R8-C8
+Zone 4
+5
+1
+0
+END_RACK
+END_RACK_DATA
