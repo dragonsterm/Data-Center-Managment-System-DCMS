@@ -40,6 +40,29 @@ Devolpement Data Center Managment System DCMS
         - Modified Structure.md
         - Modified .gitignore
         - Modified Fungsi.txt
+- 0.6 = File Operations (Save, Backup, Restore)
+        - Added File operations fucntions
+        - Added void startMenu
+        - Added void saveDataToFile
+        - Added void loadDataFromFile
+        - Added void createNewDataCenter
+        - Added void createDataFile
+        - Added void createSampleDataFile
+        - Finish Backup and restore
+        - Added locations and name of the datacenter on DisplayDataCenterMap
+        - Added Test.txt for testing with 0 data
+        - Important DataCenterData.txt is a default Data dont change it
+- 0.7 = Manajamen Server Update
+        -Added DisplaySimpleDataCenterMap
+        -Added addNewServer
+        -Added void removeExistingServer
+        -Added updateServerStatus
+        -Added updateServerUtilization
+        -Added validateServerPlacement
+        -Added displayServerInputForm
+        -Added Various ability to manage Server
+        -Added test.backup.txt (for testing only this is only a placeholder)
+        -Modified test.txt (only a placeholder)
 
 
 (released) Version History <aiming for v 1.0 Released>

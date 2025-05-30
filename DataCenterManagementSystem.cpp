@@ -117,6 +117,13 @@ void displayDataCenterMap();
 void displayRackView();
 void displayServerDetails(ServerRack &rack);
 void manageServers();
+void displaySimpleDataCenterMap();
+void addNewServer();
+void removeExistingServer();
+void updateServerStatus();
+void updateServerUtilization();
+bool validateServerPlacement(int row, int colum);
+void displayServerInputForm(ServerUnit& server);
 void searchAndFilter();
 void sortData();
 void generateReports();
@@ -640,7 +647,7 @@ void mainMenu()
         cout << "|  3. Pencarian & Filter                |" << endl;
         cout << "|  4. Pengurutan Data                   |" << endl;
         cout << "|  5. Laporan & Statistik               |" << endl;
-        cout << "|  6. Backup & Restore Data             |" << endl;
+        cout << "|  6. Save, Backup & Restore Data       |" << endl;
         cout << "|  7. Optimasi Penataan Rak             |" << endl;
         cout << "|  8. Keluar                            |" << endl;
         cout << "+---------------------------------------+\n\n"
@@ -969,7 +976,7 @@ void displayRackView()
 
     if (serverCount > 0)
     {
-        cout << "\n==== Daftar Server dalam Rack ====" << endl;
+        cout << "\n===== Daftar Server dalam Rack =====" << endl;
         cout << "+-------+------------+--------------+-----------+---------------+----------------+" << endl;
         cout << "| No.   | Server ID  | Tipe         | Status    | Utilisasi (%) | Storage (GB)   |" << endl;
         cout << "+-------+------------+--------------+-----------+---------------+----------------+" << endl;
@@ -1145,11 +1152,639 @@ void displayServerDetails(ServerRack& rack)
 // Fungsi manage Server ***WIP***
 void manageServers()
 {
-    cout << "\n=== Manajemen Server ===" << endl;
-    cout << "Fitur ini belum diimplementasikan." << endl;
-    cout << "\nTekan Enter untuk kembali ke menu utama...";
+    int choice;
+    bool exit = false;
+    do
+    {
+        system("cls");
+        cout << "\n===== Manajemen Server =====" << endl;
+        cout << "1. Tambah Server Baru" << endl;
+        cout << "2. Hapus Server" << endl;
+        cout << "3. Update Status Server" << endl;
+        cout << "4. Update Utilisasi Server" << endl;
+        cout << "5. Kembali ke Menu Utama" << endl;
+        cout << "Pilih opsi [1-5]: ";
+        cin >> choice;
+        cin.get();
+        if (cin.fail())
+        {
+            cin.clear();
+            cin.ignore(1000, '\n');
+            cout << "Input tidak valid. Silakan coba lagi." << endl;
+            cout << "Tekan Enter untuk melanjutkan...";
+            cin.get();
+            continue;
+        }
+        switch(choice)
+        {
+            case 1:
+                addNewServer();
+                break;
+            case 2:
+                removeExistingServer();
+                break;
+            case 3:
+                updateServerStatus();
+                break;
+            case 4:
+                updateServerUtilization();
+                break;
+            case 5:
+                exit = true;
+                break;
+            default:
+                cout << "Pilihan tidak valid. Tekan Enter untuk melanjutkan...";
+                cin.ignore();
+                cin.get();
+                break;
+        }
+    }while(!exit);
+}
+void displaySimpleDataCenterMap()
+{
+    cout << "\nReferensi Peta Data Center:" << endl;
+    cout << "{0} ";
+    for (int c = 0; c < DataCenter::Colum; c++)
+    {
+        if (c == 2 || c == 5)
+        {
+            cout << "{W}";
+        }
+        else
+        {
+            cout << "{" << c + 1 << "}";
+        }
+    }
+    cout << endl;
+    
+    for (int r = 0; r < DataCenter::Row; r++)
+    {
+        if (r == 2 || r == 5)
+        {
+            cout << "{W}" << endl;
+            continue;
+        }
+        cout << "{" << r + 1 << "} ";
+        for (int c = 0; c < DataCenter::Colum; c++)
+        {
+            if (c == 2 || c == 5)
+            {
+                cout << "   ";
+                continue;
+            }
+            int serverCount = dataCenter.rack[r][c].serverCount;
+            if (serverCount > 0)
+            {
+                cout << "[" << serverCount << "]";
+            }
+            else
+            {
+                cout << "[ ]";
+            }
+        }
+        cout << endl;
+    }
+    cout << "\nKeterangan:" << endl;
+    cout << "[ ] = kosong\n";
+    cout << "{W} = walkway\n\n";
+}
+void addNewServer()
+{
+    system("cls");
+    cout << "\n===== Tambah Server Baru =====" << endl;
+    displaySimpleDataCenterMap();
+
+    int row;
+    int colum;
+    bool validLocation = false;
+    while (!validLocation)
+    {
+        cout << "\nMasukkan lokasi untuk server baru:" << endl;
+        cout << "Baris [1-" << DataCenter::Row << "]: ";
+        cin >> row;
+        cout << "Kolom [1-" << DataCenter::Colum << "]: ";
+        cin >> colum;
+
+        if (cin.fail())
+        {
+            cin.clear();
+            cin.ignore(1000, '\n');
+            cout << "\nInput tidak valid. Silakan coba lagi." << endl;
+            continue;
+        }
+        row--;
+        colum--; // konversi agar sesuai array
+        if (!validateServerPlacement(row, colum))
+        {
+            if (row == 2 || row == 5 || colum == 2 || colum == 5)
+            {
+                cout << "Error: Lokasi tersebut adalah walkway!" << endl;
+            }
+            else if (dataCenter.rack[row][colum].serverCount >= dataCenter.rack[row][colum].maxCapacity)
+            {
+                cout << "Error: Rack sudah penuh! (Kapasitas: " << dataCenter.rack[row][colum].maxCapacity << ")" << endl;
+            }
+            else
+            {
+                cout << "Error: Koordinat tidak valid!" << endl;
+            }
+            cout << "\n\nTekan Enter untuk mencoba lagi...";
+            cin.ignore();
+            cin.get();
+            continue;
+        }
+        validLocation = true;
+    }
+    ServerUnit newServer;
+    displayServerInputForm(newServer);
+    if (addServer(dataCenter.rack[row][colum], newServer))
+    {
+        system("cls");
+        cout << "\n===== Tambah Server Baru =====" << endl;
+        cout << "============================" << endl;
+        cout << "| Server berhasil ditambahkan ke Rack " << dataCenter.rack[row][colum].id << endl;
+        cout << "| Server ID: " << newServer.id << endl;
+        cout << "| Baris: " << (row + 1) << endl;
+        cout << "| Kolom: " << (colum + 1) << endl;
+        cout << "============================" << endl;
+    }
+    cout << "\n\nTekan Enter untuk kembali...";
     cin.ignore();
     cin.get();
+    return;
+}
+void removeExistingServer()
+{
+    char confirm;
+    system("cls");
+    cout << "\n===== Hapus Server =====" << endl;
+    displaySimpleDataCenterMap();
+    int row;
+    int colum;
+    bool validlocation = false;
+    while (!validlocation)
+    {
+        cout << "\nMasukkan lokasi rack yang berisi server:" << endl;
+        cout << "Baris [1-" << DataCenter::Row << "]: ";
+        cin >> row;
+        cout << "Kolom [1-" << DataCenter::Colum << "]: ";
+        cin >> colum;
+
+        if (cin.fail())
+        {
+            cin.clear();
+            cin.ignore(1000, '\n');
+            cout << "Input tidak valid. Silakan coba lagi." << endl;
+            continue;
+        }
+        row--;
+        colum--;
+        if (row < 0 || row >= DataCenter::Row || colum < 0 || colum >= DataCenter::Colum)
+        {
+            cout << "Error: Koordinat tidak valid!" << endl;
+            cout << "Tekan Enter untuk mencoba lagi...";
+            cin.ignore();
+            cin.get();
+            continue;
+        }
+        if (row == 2 || row == 5 || colum == 2 || colum == 5)
+        {
+            cout << "Error: Lokasi tersebut adalah walkway!" << endl;
+            cout << "Tekan Enter untuk mencoba lagi...";
+            cin.ignore();
+            cin.get();
+            continue;
+        }
+        if (dataCenter.rack[row][colum].serverCount == 0)
+        {
+            cout << "Error: Tidak ada server dalam rack ini!" << endl;
+            cout << "Tekan Enter untuk mencoba lagi...";
+            cin.ignore();
+            cin.get();
+            continue;
+        }
+        validlocation = true;
+    }
+    ServerRack& rack = dataCenter.rack[row][colum];
+    system("cls");
+    cout << "\n===== Hapus Server =====" << endl;
+    cout << "Server dalam Rack " << rack.id << ":" << endl;
+    cout << "+-------+------------+--------------+" << endl;
+    cout << "| No.   | Server ID  | Status       |" << endl;
+    cout << "+-------+------------+--------------+" << endl;
+    for (int i = 0; i < rack.serverCount; i++)
+    {
+        string statusString;
+        switch (rack.servers[i].status)
+        {
+            case Online:
+                statusString = "Online";
+                break;
+            case Offline:
+                statusString = "Offline";
+                break;
+            case Maintanance:
+                statusString = "Maintenance";
+                break;
+            default:
+                statusString = "Unknown";
+                break;
+        }
+        cout << "| " << setw(5) << left << i + 1 << " | "
+             << setw(10) << left << rack.servers[i].id << " | "
+             << setw(12) << left << statusString << " |" << endl;
+    }
+    cout << "+-------+------------+--------------+" << endl;
+    int serverIndex;
+    cout << "\nMasukkan nomor server [1-" << rack.serverCount << "]: ";
+    cin >> serverIndex;
+    if (cin.fail() || serverIndex < 1 || serverIndex > rack.serverCount)
+    {
+        cout << "Nomor server tidak valid!" << endl;
+        cout << "Tekan Enter untuk kembali...";
+        cin.ignore();
+        cin.get();
+        return;
+    }
+    serverIndex--; //konversi ke array (ya begitu lah :( )
+    string serverIdToDelete = rack.servers[serverIndex].id;
+    system("cls");
+    cout << "\n===== Hapus Server =====" << endl;
+    cout << "Apakah Anda yakin ingin menghapus server '" << serverIdToDelete << "'? (y/n): ";
+    cin >> confirm;
+    if (confirm == 'y' || confirm == 'Y')
+    {
+        if (removeServer(rack, serverIndex))
+        {
+            cout << "\nServer '" << serverIdToDelete << "' berhasil dihapus" << endl;
+        } else
+        {
+            cout << "\nGagal menghapus server!" << endl;
+        }
+    } else
+    {
+        cout << "\nPenghapusan dibatalkan." << endl;
+    }
+    cout << "Tekan Enter untuk kembali...";
+    cin.ignore();
+    cin.get();
+}
+void updateServerStatus()
+{
+    int newStatus;
+    system("cls");
+    cout << "\n===== Update Status Server =====" << endl;
+    displaySimpleDataCenterMap();
+    int row;
+    int colum;
+    bool validlocation = false;
+    while (!validlocation)
+    {
+        cout << "\nMasukkan lokasi rack yang berisi server:" << endl;
+        cout << "Baris [1-" << DataCenter::Row << "]: ";
+        cin >> row;
+        cout << "Kolom [1-" << DataCenter::Colum << "]: ";
+        cin >> colum;
+
+        if (cin.fail())
+        {
+            cin.clear();
+            cin.ignore(1000, '\n');
+            cout << "Input tidak valid. Silakan coba lagi." << endl;
+            continue;
+        }
+        row--;
+        colum--;
+        if (row < 0 || row >= DataCenter::Row || colum < 0 || colum >= DataCenter::Colum)
+        {
+            cout << "Error: Koordinat tidak valid!" << endl;
+            cout << "Tekan Enter untuk mencoba lagi...";
+            cin.ignore();
+            cin.get();
+            continue;
+        }
+        if (row == 2 || row == 5 || colum == 2 || colum == 5)
+        {
+            cout << "Error: Lokasi tersebut adalah walkway!" << endl;
+            cout << "Tekan Enter untuk mencoba lagi...";
+            cin.ignore();
+            cin.get();
+            continue;
+        }
+        if (dataCenter.rack[row][colum].serverCount == 0)
+        {
+            cout << "Error: Tidak ada server dalam rack ini!" << endl;
+            cout << "Tekan Enter untuk mencoba lagi...";
+            cin.ignore();
+            cin.get();
+            continue;
+        }
+        validlocation = true;
+    }
+    ServerRack& rack = dataCenter.rack[row][colum];
+    system("cls");
+    cout << "\n===== Update Status Server =====" << endl;
+    cout << "Server dalam Rack " << rack.id << ":" << endl;
+    cout << "+-------+------------+--------------+" << endl;
+    cout << "| No.   | Server ID  | Status       |" << endl;
+    cout << "+-------+------------+--------------+" << endl;
+    for (int i = 0; i < rack.serverCount; i++)
+    {
+        string statusString;
+        switch (rack.servers[i].status)
+        {
+            case Online:
+                statusString = "Online";
+                break;
+            case Offline:
+                statusString = "Offline";
+                break;
+            case Maintanance:
+                statusString = "Maintenance";
+                break;
+            default:
+                statusString = "Unknown";
+                break;
+        }
+        cout << "| " << setw(5) << left << i + 1 << " | "
+             << setw(10) << left << rack.servers[i].id << " | "
+             << setw(12) << left << statusString << " |" << endl;
+    }
+    cout << "+-------+------------+--------------+" << endl;
+    int serverIndex;
+    cout << "Masukkan nomor server [1-" << rack.serverCount << "]: "; // ADD THIS LINE
+    cin >> serverIndex;
+    if (cin.fail() || serverIndex < 1 || serverIndex > rack.serverCount)
+    {
+        cout << "Nomor server tidak valid!" << endl;
+        cout << "Tekan Enter untuk kembali...";
+        cin.ignore();
+        cin.get();
+        return;
+    }
+    serverIndex--;
+    ServerUnit& server = rack.servers[serverIndex];
+    system("cls");
+    cout << "\n===== Update Status Server =====" << endl;
+    cout << "| Server yang dipilih: " << server.id << endl;
+    cout << "| Status saat ini: ";
+    switch (server.status)
+    {
+        case Online: 
+            cout << "Online"; 
+            break;
+        case Offline: 
+            cout << "Offline"; 
+            break;
+        case Maintanance: 
+            cout << "Maintenance"; 
+            break;
+        default: 
+            cout << "Unknown"; 
+            break;
+    }
+    cout << endl;
+    cout << "============================" << endl;
+    cout << "| Pilih status baru:" << endl;
+    cout << "| 1. Offline" << endl;
+    cout << "| 2. Online" << endl;
+    cout << "| 3. Maintenance" << endl;
+    cout << "Pilih [1-3]: ";
+    cin >> newStatus;
+    system("cls");
+    cout << "\n===== Update Status Server =====" << endl;
+    switch(newStatus)
+    {
+        case 1:
+            server.status = Offline;
+            cout << "\nStatus server berhasil diubah ke Offline!" << endl;
+            break;
+        case 2:
+            server.status = Online;
+            cout << "\nStatus server berhasil diubah ke Online!" << endl;
+            break;
+        case 3:
+            server.status = Maintanance;
+            cout << "\nStatus server berhasil diubah ke Maintenance!" << endl;
+            break;
+        default:
+            cout << "\nStatus tidak valid!" << endl;
+            break;
+    }
+    cout << "Tekan Enter untuk kembali....";
+    cin.ignore();
+    cin.get();
+}
+void updateServerUtilization()
+{
+    system("cls");
+    cout << "\n===== Update Utilisasi Server =====" << endl;
+    displaySimpleDataCenterMap();
+    int row;
+    int colum;
+    bool validlocation = false;
+    while (!validlocation)
+    {
+        cout << "\nMasukkan lokasi rack yang berisi server:" << endl;
+        cout << "Baris [1-" << DataCenter::Row << "]: ";
+        cin >> row;
+        cout << "Kolom [1-" << DataCenter::Colum << "]: ";
+        cin >> colum;
+
+        if (cin.fail())
+        {
+            cin.clear();
+            cin.ignore(1000, '\n');
+            cout << "Input tidak valid. Silakan coba lagi." << endl;
+            continue;
+        }
+        row--;
+        colum--;
+        if (row < 0 || row >= DataCenter::Row || colum < 0 || colum >= DataCenter::Colum)
+        {
+            cout << "Error: Koordinat tidak valid!" << endl;
+            cout << "Tekan Enter untuk mencoba lagi...";
+            cin.ignore();
+            cin.get();
+            continue;
+        }
+        if (row == 2 || row == 5 || colum == 2 || colum == 5)
+        {
+            cout << "Error: Lokasi tersebut adalah walkway!" << endl;
+            cout << "Tekan Enter untuk mencoba lagi...";
+            cin.ignore();
+            cin.get();
+            continue;
+        }
+        if (dataCenter.rack[row][colum].serverCount == 0)
+        {
+            cout << "Error: Tidak ada server dalam rack ini!" << endl;
+            cout << "Tekan Enter untuk mencoba lagi...";
+            cin.ignore();
+            cin.get();
+            continue;
+        }
+        validlocation = true;
+    }
+    ServerRack& rack = dataCenter.rack[row][colum];
+    system("cls");
+    cout << "\n===== Update Utilisasi Server =====" << endl;
+    cout << "Server dalam Rack " << rack.id << ":" << endl;
+    cout << "+-------+------------+--------------+" << endl;
+    cout << "| No.   | Server ID  | Status       |" << endl;
+    cout << "+-------+------------+--------------+" << endl;
+    for (int i = 0; i < rack.serverCount; i++)
+    {
+        string statusString;
+        switch (rack.servers[i].status)
+        {
+            case Online:
+                statusString = "Online";
+                break;
+            case Offline:
+                statusString = "Offline";
+                break;
+            case Maintanance:
+                statusString = "Maintenance";
+                break;
+            default:
+                statusString = "Unknown";
+                break;
+        }
+        cout << "| " << setw(5) << left << i + 1 << " | "
+             << setw(10) << left << rack.servers[i].id << " | "
+             << setw(12) << left << statusString << " |" << endl;
+    }
+    cout << "+-------+------------+--------------+" << endl;
+    int serverIndex;
+    cout << "Masukkan nomor server [1-" << rack.serverCount << "]: "; // ADD THIS LINE
+    cin >> serverIndex;
+    if (cin.fail() || serverIndex < 1 || serverIndex > rack.serverCount)
+    {
+        cout << "Nomor server tidak valid!" << endl;
+        cout << "Tekan Enter untuk kembali...";
+        cin.ignore();
+        cin.get();
+        return;
+    }
+    serverIndex--;
+    ServerUnit& server = rack.servers[serverIndex];
+    system("cls");
+    cout << "\n===== Update Utilisasi Server =====" << endl;
+    cout << "| Server yang dipilih: " << server.id << endl;
+    cout << "| Utilisasi saat ini: " << server.utilization << "%" << endl;
+    float newUtilization;
+     cout << "| Masukkan utilisasi baru (0-100%): ";
+    cin >> newUtilization;
+    cout << "============================" << endl;
+    if (newUtilization < 0 || newUtilization > 100)
+    {
+        cout << "Error: Utilisasi harus antara 0-100%!" << endl;
+    }
+    else
+    {
+        server.utilization = newUtilization;
+        cout << "\nUtilisasi server berhasil diubah ke " << newUtilization << "%!" << endl;
+    }
+    cout << "Tekan Enter untuk kembali...";
+    cin.ignore();
+    cin.get();
+}
+bool validateServerPlacement(int row, int colum)
+{
+    if (row < 0 || row >= DataCenter::Row || colum < 0 || colum >= DataCenter::Colum)
+    {
+        return false;
+    }
+
+    // Check walkway
+    if (row == 2 || row == 5 || colum == 2 || colum == 5)
+    {
+        return false;
+    }
+    if (dataCenter.rack[row][colum].serverCount >= dataCenter.rack[row][colum].maxCapacity)
+    {
+        return false;
+    }
+    return true;
+}
+void displayServerInputForm(ServerUnit& server)
+{
+    int typeChoice;
+    int statusChoice;
+    system("cls");
+    cout << "\n===== Tambah Server Baru =====" << endl;
+    cout << "| Masukkan ID Server: ";
+    cin.ignore();
+    getline(cin, server.id);
+    system("cls");
+    cout << "\n===== Tambah Server Baru =====" << endl;
+    cout << "| Pilih Tipe Server:" << endl;
+    cout << "| 1. Web Server" << endl;
+    cout << "| 2. Database Server" << endl;
+    cout << "| 3. Application Server" << endl;
+    cout << "| 4. File Server" << endl;
+    cout << "Pilih [1-4]: ";
+    cin >> typeChoice;
+    switch (typeChoice)
+    {
+    case 1:
+        server.type = Web;
+        break;
+    case 2:
+        server.type = Database;
+        break;
+    case 3:
+        server.type = Application;
+        break;
+    case 4:
+        server.type = File;
+        break;
+    default:
+        server.type = UnCategorized;
+        break;
+    }
+    system("cls");
+    cout << "\n===== Tambah Server Baru =====" << endl;
+    cout << "| Pilih Status Server:" << endl;
+    cout << "| 1. Offline" << endl;
+    cout << "| 2. Online" << endl;
+    cout << "| 3. Maintenance" << endl;
+    cout << "Pilih [1-3]: ";
+    cin >> statusChoice;
+    switch (statusChoice)
+    {
+    case 1:
+        server.status = Offline;
+        break;
+    case 2:
+        server.status = Online;
+        break;
+    case 3:
+        server.status = Maintanance;
+        break;
+    default:
+        server.status = UnKnown;
+        break;
+    }
+    system("cls");
+    cout << "\n===== Tambah Server Baru =====" << endl;
+    cout << "| Masukkan Utilisasi (0-100%): ";
+    cin >> server.utilization;
+    cout << "| Masukkan Kapasitas Storage (GB): ";
+    cin >> server.stroageCapacity;
+    cout << "| Masukkan Available Storage (GB): ";
+    cin >> server.availableStorage;
+    cout << "| Masukkan Model Server: ";
+    cin.ignore();
+    getline(cin, server.model);
+    cout << "| Masukkan Jumlah CPU Cores: ";
+    cin >> server.cpuCores;
+    cout << "| Masukkan RAM (GB): ";
+    cin >> server.ram;
+    cout << "| Masukkan IP Address: ";
+    cin.ignore();
+    getline(cin, server.ipAddress);
 }
 
 // Fungsi Search dan Filter ***PlaceHolder WIP***
@@ -1185,17 +1820,17 @@ void generateReports()
 // Fungsi Backup & Restore ***PlaceHolder WIP***
 void backupAndRestore()
 {
-    cout << "\n=== Backup & Restore Data ===" << endl;
     int choice;
     bool exit = false;
     do 
     {
         system("cls");
-        cout << "\n=== Backup & Restore Data ===" << endl;
-        cout << "1. Backup Data ke File" << endl;
-        cout << "2. Restore Data dari File" << endl;
-        cout << "3. Kembali ke Menu Utama" << endl;
-        cout << "Pilih opsi [1-3]: ";
+        cout << "\n===== Backup & Restore Data =====" << endl;
+        cout << "1. Save Data ke File (Replace Current)" << endl;
+        cout << "2. Backup Data ke File (Create Copy)" << endl;
+        cout << "3. Restore Data dari File" << endl;
+        cout << "4. Kembali ke Menu Utama" << endl;
+        cout << "Pilih opsi [1-4]: ";
         cin >> choice;
         
         if (cin.fail()) {
@@ -1207,9 +1842,45 @@ void backupAndRestore()
         
         switch (choice) {
         case 1:
+        {
+            system("cls");
+            cout << "\n===== Save Data ke File =====" << endl;
+            string fileName;
+            cout << "Masukkan nama file untuk disimpan (dengan .txt): ";
+            cin.ignore();
+            getline(cin, fileName);
+            ifstream checkFile(fileName);
+                if (checkFile.good()) 
+                {
+                    checkFile.close();
+                    char confirm;
+                    cout << "\nFile '" << fileName << "' sudah ada." << endl;
+                    cout << "Apakah Anda yakin ingin menimpa file tersebut? (y/n): ";
+                    cin >> confirm;
+                    
+                    if (confirm == 'y' || confirm == 'Y') 
+                    {
+                        saveDataToFile(fileName);
+                        cout << "\nFile berhasil ditimpa!" << endl;
+                    } else 
+                    {
+                        cout << "\nPenyimpanan dibatalkan." << endl;
+                    }
+                } else 
+                {
+                    saveDataToFile(fileName);
+                }
+                cout << "Tekan Enter untuk melanjutkan...";
+                cin.ignore();
+                cin.get();
+        }
+        break;
+        case 2:
             {
+                system("cls");
+                cout << "\n===== Backup Data ke File =====" << endl;
                 string fileName;
-                cout << "Masukkan nama file backup (tanpa ekstensi): ";
+                cout << "Masukkan nama file backup (tanpa .txt): ";
                 cin.ignore();
                 getline(cin, fileName);
                 fileName += "_backup.txt";
@@ -1218,10 +1889,12 @@ void backupAndRestore()
                 cin.get();
             }
             break;
-        case 2:
+        case 3:
             {
+                system("cls");
+                cout << "\n===== Restore Data ke File =====" << endl;
                 string fileName;
-                cout << "Masukkan nama file untuk restore (dengan ekstensi .txt): ";
+                cout << "Masukkan nama file untuk restore (dengan .txt): ";
                 cin.ignore();
                 getline(cin, fileName);
                 
@@ -1237,7 +1910,7 @@ void backupAndRestore()
                 cin.get();
             }
             break;
-        case 3:
+        case 4:
             exit = true;
             break;
         default:
@@ -1247,8 +1920,6 @@ void backupAndRestore()
             break;
         }
     } while (!exit);
-    cin.ignore();
-    cin.get();
 }
 
 // Fungsi Optimize Rack Layout ***PlaceHolder WIP***
