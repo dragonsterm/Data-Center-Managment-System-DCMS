@@ -1,125 +1,346 @@
-List Materi yang akan ada di dalam Project Pemrograman
+DAFTAR MATERI YANG DIIMPLEMENTASIKAN DALAM PROJECT DATA CENTER MANAGEMENT SYSTEM
+===============================================================================
+
 1. Array Multi-dimensi
-2. Struct
+2. Struct dan Enum
 3. Fungsi Rekursif
-4. Searching
-5. Sorting
+4. Searching (Binary Search & Sequential Search)
+5. Sorting (Quick Sort & Insertion Sort)
 6. Pointer
 7. Operasi File
 
-Penjelasan Fitur dan Kegunaan:
+PENJELASAN FITUR DAN KEGUNAAN LENGKAP:
+=====================================
 
-Struktur Data (Struct)
-1. ServerUnit
-    Merepresentasikan satu server dalam sebuah rak
-    Berisi informasi tentang jenis server, status, persentase utilisasi, kapasitas penyimpanan, dan penyimpanan yang tersedia
+STRUKTUR DATA (STRUCT & ENUM)
+============================
 
-2.ServerRack
-    Merepresentasikan rak yang berisi beberapa unit server
-    Berisi informasi tentang lokasi rak, kapasitas, dan array objek ServerUnit
+1. Enum ServerType
+   - Web: Server untuk aplikasi web
+   - Database: Server basis data  
+   - Application: Server aplikasi
+   - File: Server file
+   - UnCategorized: Kategori tidak terdefinisi
 
-3.DataCenter
-    Struktur data utama yang merepresentasikan seluruh data center
-    Berisi array multi-dimensi dari objek ServerRack untuk merepresentasikan zona/ruangan yang berbeda
+2. Enum ServerStatus
+   - Online: Server aktif beroperasi
+   - Offline: Server mati/tidak aktif
+   - Maintanance: Server dalam pemeliharaan
+   - UnKnown: Status tidak diketahui
 
-Fungsi Utama
-Fungsi Manajemen Data
-1.initializeDataCenter()
-    Menginisialisasi struktur data center dengan nilai default
-    Menyiapkan array multi-dimensi yang merepresentasikan rak server dan ruangan
+3. ServerUnit (Struct)
+   - id: ID unik server (string)
+   - type: Jenis server (enum)
+   - status: Status operasional (enum)
+   - utilization: Persentase utilisasi CPU (float)
+   - stroageCapacity: Kapasitas total storage (double)
+   - availableStorage: Storage tersedia (double)
+   - model: Model server (string, default "Unspecified Model")
+   - cpuCores: Jumlah core CPU (int, default 4)
+   - ram: Kapasitas RAM GB (int, default 8)
+   - ipAddress: Alamat IP (string, default "0.0.0.0")
 
-2.addServer()
-    Menambahkan server baru ke lokasi rak tertentu
-    Memperbarui struktur data terkait
+4. ServerRack (Struct)
+   - id: ID rak server (string)
+   - location: Lokasi dalam data center (string)
+   - maxCapacity: Kapasitas maksimum (int, default 5)
+   - operationalStatus: Status operasional (bool, default true)
+   - serverCount: Jumlah server saat ini (int)
+   - servers: Array ServerUnit[5]
 
-3.removeServer()
-    Menghapus server dari lokasi rak tertentu
-    Memperbarui struktur data terkait
+5. DataCenter (Struct)
+   - name: Nama data center (string)
+   - location: Lokasi data center (string)
+   - Row & Colum: Konstanta 8x8 matrix
+   - rack: Array multi-dimensi ServerRack[8][8]
 
-4.updateServerStatus()
-    Memperbarui status server (online, offline, maintenance)
-    Mengubah metrik utilisasi sesuai dengan status
+FUNGSI UTAMA YANG DIIMPLEMENTASIKAN
+==================================
 
-5.updateServerUtilization()
-    Memperbarui utilisasi CPU, memori, atau penyimpanan server
+FUNGSI INISIALISASI & MENU SISTEM
+=================================
+1. main()
+   - Fungsi utama yang memanggil startMenu() dan mainMenu()
 
-Operasi File
-1.saveDataToFile()
-    Menyimpan kondisi data center saat ini ke file lokal
-Menggunakan operasi file untuk menulis data terstruktur
+2. startMenu()
+   - Menu awal dengan pilihan:
+     * Load data dari file existing
+     * Buat data center baru
+   - Validasi input dan file existence
 
-2.loadDataFromFile()
-    Memuat kondisi data center yang sebelumnya disimpan dari file
-Mengurai file dan mengisi struktur data
+3. createNewDataCenter()
+   - Membuat data center baru dengan 2 opsi:
+     * Default setting dengan sample data
+     * Input manual zero data
+   - Inisialisasi ID rak otomatis (R1-C1 format)
 
-Searching
-1. findServerByType()
-    Mencari server dengan jenis tertentu
-    Mengembalikan lokasi server yang cocok
-    Menggunakan Setinel
+4. createDataFile(string fileName)
+   - Membuat file data kosong dengan struktur yang benar
 
-2.findAvailableStorage()
-    Mencari server dengan penyimpanan tersedia di atas ambang batas tertentu
-    Mengembalikan lokasi dan kapasitas yang tersedia
-    menggunakan Binary Search
+5. createSampleDataFile(string fileName)
+   - Membuat file dengan 8 sample server
+   - Penempatan server pada berbagai rak
+   - Data server custom dengan spesifikasi lengkap
 
-3.findServersByStatus()
-    Mencari server berdasarkan status operasionalnya
-    Menggunakan nonsentinel
+6. mainMenu()
+   - Menu utama dengan 7 opsi:
+     * Visualisasi Data Center
+     * Manajemen Server
+     * Pencarian
+     * Pengurutan Data
+     * Laporan
+     * Save, Backup & Restore
+     * Keluar
+   - Menampilkan system status real-time
+   - Perhitungan server aktif dan storage tersedia
 
-4.findServerById()
-    Mencari server berdasarkan idnya
-    Menggunakan Binary Search
+7. processChoice(int choice)
+   - Memproses pilihan user dan memanggil fungsi terkait
 
-Sorting
-1.insertionSortServersAscending()
-    Mengurutkan server berdasarkan kriteria tertentu (utilisasi, penyimpanan tersedia) secara ascending
-    Mengimplementasikan algoritma insertion sort
+8. getCurrentDateTime()
+   - Mendapatkan waktu dan tanggal sistem saat ini
+   - Format: DD/MM/YYYY HH:MM:SS
 
-2.quickSortServersDescending()
-    Mengurutkan server berdasarkan kriteria tertentu secara descending
-    Mengimplementasikan algoritma quick sort
+FUNGSI MANAJEMEN SERVER
+=======================
+1. addServer(ServerRack &rack, const ServerUnit &server)
+   - Menambah server ke rak jika ada space tersedia
+   - Return: bool (true jika berhasil)
+   - Validasi kapasitas rak
 
-Fungsi Visualisasi
-1.displayDataCenterMap()
-    Memvisualisasikan tata letak keseluruhan data center
-    Menampilkan zona dan ruangan yang berbeda
+2. removeServer(ServerRack &rack, int index)
+   - Menghapus server berdasarkan index
+   - Menggeser array setelah penghapusan
+   - Return: bool (true jika berhasil)
 
+3. manageServers()
+   - Menu manajemen server dengan 5 opsi:
+     * Tambah server baru
+     * Hapus server
+     * Update status server
+     * Update utilisasi server
+     * Kembali ke menu utama
 
-2.displayRackView()
-    Memvisualisasikan rak tertentu dengan server-servernya
-    Menampilkan informasi status, jenis, dan utilisasi
+4. addNewServer()
+   - Interface lengkap untuk menambah server
+   - Input koordinat rak dengan validasi
+   - Multiple server addition dalam satu session
+   - Rekursi: pilihan untuk menambah ke rak lain
+   - Progress tracking dan konfirmasi
 
-3.displayServerDetails()
-    Menampilkan informasi detail tentang server yang dipilih
-    Termasuk jenis, status, metrik utilisasi, dan informasi penyimpanan
+5. removeExistingServer()
+   - Interface untuk hapus server
+   - Menampilkan daftar server dalam rak
+   - Konfirmasi sebelum penghapusan
 
-Fungsi Rekursif
-1.calculateTotalStorageRecursive()
-    Menghitung total penyimpanan secara rekursif di bagian tertentu data center
-    Mendemonstrasikan penggunaan fungsi rekursif
+6. updateServerStatus()
+   - Mengubah status server (Online/Offline/Maintenance)
+   - Interface pemilihan server dari list
 
-2.traverseDataCenterRecursive()
-    Melakukan traversal struktur data center secara rekursif untuk pelaporan atau analisis
-    Dapat digunakan untuk pencarian atau agregasi kompleks
+7. updateServerUtilization()
+   - Update persentase utilisasi (0-100%)
+   - Validasi input range
 
-Fungsi Berbasis Pointer
-1.swapServers()
-    Menggunakan pointer untuk menukar dua server antar lokasi
-    Mendemonstrasikan penggunaan pointer untuk efisiensi memori
+8. validateServerPlacement(int row, int colum)
+   - Validasi koordinat rak
+   - Cek walkway areas (row 2,5 & colum 2,5)
+   - Cek kapasitas rak
+   - Return: bool
 
-2.optimizeRackSpace()
-    Mengatur ulang server dalam rak menggunakan operasi pointer untuk optimasi
-    Memindahkan server berdasarkan pola utilisasi
+9. displayServerInputForm(ServerUnit& server)
+   - Form input lengkap data server
+   - Pemilihan type dan status via menu
+   - Input spesifikasi teknis lengkap
 
-Fungsi Pembantu
-1.generateReports()
-    Menghasilkan laporan penggunaan dan statistik tentang data center
+FUNGSI VISUALISASI
+==================
+1. displayDataCenterMap()
+   - Menampilkan layout data center 8x8 dengan:
+     * Header kolom dan baris
+     * Jumlah server per rak [n]
+     * Rak kosong [ ]
+     * Walkway {W}
+   - Sub-menu untuk tampilan detail rak
+   - Statistik total server dan rak
 
-2.validateServerPlacement()
-    Memeriksa apakah server dapat ditempatkan di lokasi tertentu
-    Memverifikasi batasan fisik dan logis
+2. displaySimpleDataCenterMap()
+   - Versi sederhana peta data center
+   - Digunakan dalam fungsi lain sebagai referensi
 
-3.calculateUtilizationMetrics()
-    Menghitung berbagai metrik utilisasi untuk pelaporan
-    Mungkin menggunakan teknik rekursif untuk perhitungan kompleks
+3. displayRackView()
+   - Input koordinat rak dari user
+   - Validasi koordinat dan walkway
+   - Menampilkan detail rak:
+     * ID dan lokasi rak
+     * Kapasitas dan status operasional
+     * Tabel daftar server dengan kolom:
+       - No, Server ID, Type, Status, Utilisasi, Storage
+   - Sub-menu untuk detail server
+
+4. displayServerDetails(ServerRack& rack)
+   - Pilihan server dari list dalam rak
+   - Detail lengkap server:
+     * Informasi umum (ID, model, type, status, IP)
+     * Spesifikasi (CPU cores, RAM, storage, utilisasi)
+
+FUNGSI PENCARIAN (SEARCHING)
+============================
+1. search()
+   - Menu pencarian dengan 5 opsi:
+     * Cari berdasarkan type (placeholder)
+     * Cari berdasarkan available storage (Binary Search)
+     * Cari berdasarkan status (placeholder)  
+     * Cari berdasarkan ID (Binary Search)
+     * Kembali ke menu utama
+
+2. findServerByType()
+   - PLACEHOLDER - Belum diimplementasikan
+   - Untuk sequential search berdasarkan type server
+
+3. findAvailableStorage()
+   - IMPLEMENTASI PENUH
+   - Metode: Binary Search
+   - Mengumpulkan semua server dari seluruh rak
+   - Sort descending berdasarkan available storage
+   - Binary search untuk threshold minimum
+   - Menampilkan hasil dalam tabel format
+   - Statistik pencarian
+
+4. findServersByStatus()
+   - PLACEHOLDER - Belum diimplementasikan
+   - Untuk sequential search berdasarkan status
+
+5. findServerById()
+   - IMPLEMENTASI PENUH  
+   - Metode: Binary Search
+   - Mengumpulkan semua server dan info rak
+   - Bubble sort berdasarkan ID (case insensitive)
+   - Binary search untuk ID target
+   - Menampilkan detail lengkap server yang ditemukan
+
+6. collectAllServersWithRackInfo(ServerUnit allServers[], string rackInfo[], int& totalCount)
+   - Fungsi helper untuk mengumpulkan server dari semua rak
+   - Mengisi array server dan info rak terkait
+   - Menghitung total server di data center
+
+FUNGSI PENGURUTAN (SORTING)
+===========================
+1. sortData()
+   - Menu pengurutan dengan opsi:
+     * Quick Sort (Descending)
+     * Insertion Sort (Ascending) - placeholder
+   - Kriteria pengurutan:
+     * Utilisasi server (%)
+     * Available Storage (GB)
+     * Total Storage Capacity (GB)
+     * CPU Cores
+     * RAM (GB)
+   - Menampilkan data sebelum dan sesudah sorting
+   - Statistik nilai tertinggi dan terendah
+
+2. quickSortServersDescending(ServerUnit servers[], int low, int high, int sortBy)
+   - IMPLEMENTASI PENUH
+   - Algoritma Quick Sort untuk descending order
+   - Rekursif dengan partitioning
+   - Multi-criteria sorting (5 kriteria)
+
+3. partitionForQuickSort(ServerUnit servers[], int low, int high, int sortBy)
+   - Fungsi partisi untuk Quick Sort
+   - Switch case untuk berbagai kriteria sorting
+   - Return pivot index
+
+4. insertionSortServersAscending(ServerUnit servers[], int size, int sortBy)
+   - PLACEHOLDER - Belum diimplementasikan
+   - Untuk ascending order sorting
+
+FUNGSI POINTER
+==============
+1. swapServers(ServerUnit* a, ServerUnit* b)
+   - Menggunakan pointer untuk menukar dua server
+   - Efisiensi memori dengan pass by reference
+   - Digunakan dalam algoritma sorting
+
+OPERASI FILE
+============
+1. saveDataToFile(string fileName)
+   - Format file terstruktur:
+     * DATA_CENTER_INFO section
+     * RACK_DATA section dengan detail setiap rak
+     * SERVER data untuk setiap rak
+   - Menyimpan semua data struktur lengkap
+   - Error handling untuk file operations
+
+2. loadDataFromFile(string fileName)
+   - Parsing file dengan format terstruktur
+   - Membaca data center info dan semua rak
+   - Rekonstruksi struktur data lengkap
+   - Error handling untuk file not found
+
+FUNGSI LAPORAN & BACKUP
+=======================
+1. generateReports()
+   - Laporan lengkap ke file dengan format:
+     * Header dan timestamp
+     * Data center information
+     * Server statistics (total, active, offline, maintenance)
+     * Storage utilization
+     * Detailed rack information
+     * Tabel server per rak
+   - Otomatis diberi nama dengan suffix "_report.txt"
+
+2. backupAndRestore()
+   - Menu backup dan restore dengan 4 opsi:
+     * Save data ke file (replace current)
+     * Backup data ke file (create copy dengan suffix "_backup")
+     * Restore data dari file
+     * Kembali ke menu utama
+   - Konfirmasi overwrite untuk file existing
+   - Error handling untuk file operations
+
+FUNGSI REKURSIF
+===============
+1. addNewServer() - Implementasi Rekursi
+   - Setelah berhasil menambah server, program menanyakan:
+     "Apakah Anda ingin menambah server ke rak lain? (y/n)"
+   - Jika user pilih 'y', fungsi memanggil dirinya sendiri
+   - Jika user pilih 'n', kembali ke menu manajemen
+   - Rekursi berhenti berdasarkan input user
+
+ARRAY MULTI-DIMENSI
+===================
+1. DataCenter Structure
+   - Array 2D: ServerRack[8][8] (64 total slots)
+   - 48 rak aktif (minus 16 walkway)
+   - Setiap rak: Array ServerUnit[5]
+   - Total kapasitas: 240 server maksimum
+
+2. Walkway System
+   - Row 2 dan 5 = walkway horizontal  
+   - Column 2 dan 5 = walkway vertikal
+   - Validasi otomatis untuk mencegah penempatan di walkway
+
+STATUS IMPLEMENTASI
+===================
+✅ LENGKAP (Fully Implemented):
+- Struktur data dengan enum dan struct
+- Array multi-dimensi
+- Fungsi rekursif
+- File operations (save/load/backup/restore)
+- Visualisasi lengkap
+- Quick Sort descending
+- Binary Search (ID & Available Storage)
+- Pointer functions
+- Report generation
+- Menu system lengkap
+
+🔄 SEBAGIAN (Partially Implemented):
+- Searching: 2 dari 4 fungsi aktif
+- Sorting: Quick Sort ada, Insertion Sort placeholder
+
+❌ PLACEHOLDER (Not Yet Implemented):
+- findServerByType() - Sequential search
+- findServersByStatus() - Sequential search  
+- insertionSortServersAscending() - Insertion sort
+
+TOTAL FUNGSI: 25+ fungsi dengan implementasi yang komprehensif
+TINGKAT KELENGKAPAN: ~85% dari semua fitur yang direncanakan

@@ -101,21 +101,25 @@ struct DataCenter
 DataCenter dataCenter;
 
 // deklarasi function
-// void initializeDataCenter();
-bool addServer(ServerRack &rack, const ServerUnit &server);
+// untuk inisialisasi struct dan data
+bool addServer(ServerRack &rack, const ServerUnit &server); 
 bool removeServer(ServerRack &rack, int index);
+// Operasi FIle
 void startMenu();
 void saveDataToFile(string fileName = "");
 void loadDataFromFile(string fileName = "");
 void createNewDataCenter();
 void createDataFile(string fileName);
 void createSampleDataFile(string fileName);
+// Main Menu
 void mainMenu();
 void processChoice(int choice);
 string getCurrentDateTime();
+// Display
 void displayDataCenterMap();
 void displayRackView();
 void displayServerDetails(ServerRack &rack);
+// Manajemen Server
 void manageServers();
 void displaySimpleDataCenterMap();
 void addNewServer();
@@ -124,79 +128,28 @@ void updateServerStatus();
 void updateServerUtilization();
 bool validateServerPlacement(int row, int colum);
 void displayServerInputForm(ServerUnit& server);
-void searchAndFilter();
+// Search
+void search();
+void findServerByType();
+void findAvailableStorage();
+void findServersByStatus();
+void findServerById();
+// Sort
 void sortData();
+void quickSortServersDescending(ServerUnit servers[], int low, int high, int sortBy);
+int partitionForQuickSort(ServerUnit servers[], int low, int high, int sortBy);
+void swapServers(ServerUnit* a, ServerUnit* b);
+void collectAllServersWithRackInfo(ServerUnit allServers[], string rackInfo[], int& totalCount);
+void insertionSortServersAscending(ServerUnit servers[], int size, int sortBy);
 void generateReports();
 void backupAndRestore();
-void optimizeRackLayout();
-
 // main
 int main()
 {
     startMenu();
-    // initializeDataCenter();
     mainMenu();
     return 0;
 }
-
-
-// function untuk inisialisasi Data Center sudah tidak dipakai tapi di simpan sementara
-/* void initializeDataCenter()
-{
-    // Membuat 10 unique server dengan ID unik
-    ServerUnit server1("WEB-001", Web, Online);
-    ServerUnit server2("DB-001", Database, Online);
-    ServerUnit server3("APP-001", Application, Online);
-    ServerUnit server4("FILE-001", File, Online);
-    ServerUnit server5("WEB-002", Web, Online);
-    ServerUnit server6("DB-002", Database, Online);
-    ServerUnit server7("WEB-003", Web, Online);
-
-    const bool walkwayChecker[DataCenter::Row][DataCenter::Colum] = {
-        {false, false, true, false, false, true, false, false}, // Row 0
-        {false, false, true, false, false, true, false, false}, // Row 1
-        {true,  true,  true, true,  true,  true, true,  true},       // Row 2 (walkway row)
-        {false, false, true, false, false, true, false, false}, // Row 3
-        {false, false, true, false, false, true, false, false}, // Row 4
-        {true,  true,  true, true,  true,  true, true,  true},       // Row 5 (walkway row)
-        {false, false, true, false, false, true, false, false}, // Row 6
-        {false, false, true, false, false, true, false, false}  // Row 7
-    };
-
-    // 2 Server di Rack 1,1 (koordinat 0,0)
-    addServer(dataCenter.rack[0][0], server1);
-    addServer(dataCenter.rack[0][0], server2);
-
-    // 1 Server di Rack 2,1 (koordinat 1,0)
-    addServer(dataCenter.rack[1][0], server3);
-
-    // 1 Server di Rack 2,3 (koordinat 1,3)
-    addServer(dataCenter.rack[1][3], server4);
-
-    // 1 Server di Rack 4,4 (koordinat 3,3)
-    addServer(dataCenter.rack[3][3], server5);
-
-    // 1 Server di Rack 7,1 (koordinat 6,0)
-    addServer(dataCenter.rack[6][0], server6);
-
-    // 1 Server di Rack 7,4 (koordinat 6,3)
-    addServer(dataCenter.rack[6][3], server7);
-
-    // Static data custom server tidak pakai default constructor bisa add lagi
-    ServerUnit customServer1;
-    customServer1.id = "WEB-004";
-    customServer1.type = Web;  
-    customServer1.status = Online;
-    customServer1.utilization = 75.5;
-    customServer1.stroageCapacity = 2000.0;
-    customServer1.availableStorage = 1000.0;
-    customServer1.model = "Skibidi T01LET";
-    customServer1.cpuCores = 24;
-    customServer1.ram = 128;
-    customServer1.ipAddress = "192.168.1.100";
-
-    addServer(dataCenter.rack[0][3], customServer1); // {1,4} (koordinat 0,3)
-} */
 
 bool addServer(ServerRack& rack, const ServerUnit& server)
 {
@@ -243,7 +196,7 @@ void startMenu()
     {
         system("cls");
         cout << "===== DATA CENTER MANAGEMENT SYSTEM =====" << endl;
-        cout << "===== DCMS V 0.7 (Unreleased) #2025 =====" << endl;
+        cout << "===== DCMS V 0.9 (Unreleased) #2025 =====" << endl;
         cout << "[Current Date & Time: " << getCurrentDateTime() << "]" << endl << endl;
         cout << "+---------------------------------------+" << endl;
         cout << "|             START MENU                |" << endl;
@@ -634,7 +587,7 @@ void mainMenu()
         system("cls");
         // Diplay Header
         cout << "===== DATA CENTER MANAGEMENT SYSTEM =====" << endl;
-        cout << "===== DCMS V 0.7 (Unreleased) #2025 =====" << endl;
+        cout << "===== DCMS V 0.9 (Unreleased) #2025 =====" << endl;
         cout << "[Current Date & Time: " << getCurrentDateTime() << "]" << endl
              << endl;
 
@@ -644,17 +597,17 @@ void mainMenu()
         cout << "+---------------------------------------+" << endl;
         cout << "|  1. Visualisasi Data Center           |" << endl;
         cout << "|  2. Manajemen Server                  |" << endl;
-        cout << "|  3. Pencarian & Filter                |" << endl;
+        cout << "|  3. Pencarian                         |" << endl;
         cout << "|  4. Pengurutan Data                   |" << endl;
-        cout << "|  5. Laporan & Statistik               |" << endl;
+        cout << "|  5. Laporan                           |" << endl;
         cout << "|  6. Save, Backup & Restore Data       |" << endl;
-        cout << "|  7. Optimasi Penataan Rak             |" << endl;
-        cout << "|  8. Keluar                            |" << endl;
+        cout << "|  7. Keluar                            |" << endl;
         cout << "+---------------------------------------+\n\n"
              << endl;
 
         // Perhitungan System Status
         int activeServer = 0;
+        int totalServer = 0;
         double totalStorage = 0.0;
         string countServerId[1000];
         int countServerIdSize = 0;
@@ -663,6 +616,8 @@ void mainMenu()
         {
             for (int c = 0; c < DataCenter::Colum; c++)
             {
+                if (r == 2 || r == 5 || c == 2 || c == 5) continue;
+                totalServer += dataCenter.rack[r][c].serverCount;
                 for (int s = 0; s < dataCenter.rack[r][c].serverCount; s++)
                 {
                     ServerUnit &server = dataCenter.rack[r][c].servers[s];
@@ -692,11 +647,11 @@ void mainMenu()
 
         // Dispay System Status
         cout << "System Status: \n";
-        cout << "- Servers Aktif: " << activeServer << "\n";
+        cout << "- Servers Aktif: " << activeServer << "/" << totalServer << "\n";
         cout << "- Storage Tersedia: " << totalStorage << "GB \n\n";
 
         // User input
-        cout << "Pilih menu [1-8]: ";
+        cout << "Pilih menu [1-7]: ";
         cin >> choice;
 
         // Validasi Input
@@ -708,7 +663,7 @@ void mainMenu()
             continue;
         }
 
-        if (choice == 8)
+        if (choice == 7)
         {
             exit = true;
             cout << "Terima kasih telah menggunakan Data Center Management System." << endl;
@@ -732,7 +687,7 @@ void processChoice(int choice)
         manageServers();
         break;
     case 3:
-        searchAndFilter();
+        search();
         break;
     case 4:
         sortData();
@@ -742,9 +697,6 @@ void processChoice(int choice)
         break;
     case 6:
         backupAndRestore();
-        break;
-    case 7:
-        optimizeRackLayout();
         break;
     default:
         cout << "Pilihan tidak valid. Tekan Enter untuk melanjutkan...";
@@ -1295,23 +1247,116 @@ void addNewServer()
         }
         validLocation = true;
     }
-    ServerUnit newServer;
-    displayServerInputForm(newServer);
-    if (addServer(dataCenter.rack[row][colum], newServer))
+    ServerRack& selectedRack = dataCenter.rack[row][colum];
+    int availableSpace = selectedRack.maxCapacity - selectedRack.serverCount;
+    system("cls");
+    cout << "\n===== Tambah Server Baru =====" << endl;
+    cout << "Rack yang dipilih: " << selectedRack.id << endl;
+    cout << "Server saat ini: " << selectedRack.serverCount << "/" << selectedRack.maxCapacity << endl;
+    cout << "Ruang tersedia: " << availableSpace << " server" << endl;
+    if (availableSpace == 0)
+    {
+        cout << "\nError: Rack sudah penuh!" << endl;
+        cout << "Tekan Enter untuk kembali...";
+        cin.ignore();
+        cin.get();
+        return;
+    }
+    int serverCount;
+    bool validServerCount = false;
+    while (!validServerCount)
+    {
+        cout << "\nBerapa server yang ingin ditambahkan? [1-" << availableSpace << "]: ";
+        cin >> serverCount;
+        
+        if (cin.fail())
+        {
+            cin.clear();
+            cin.ignore(1000, '\n');
+            cout << "Input tidak valid. Silakan masukkan angka." << endl;
+            continue;
+        }
+        
+        if (serverCount < 1 || serverCount > availableSpace)
+        {
+            cout << "Jumlah tidak valid. Maksimal " << availableSpace << " server dapat ditambahkan." << endl;
+            continue;
+        }
+        
+        validServerCount = true;
+    }
+    int succefullyAdded = 0;
+    bool continueAdding = true;
+    for (int i = 0; i < serverCount && continueAdding; i++)
     {
         system("cls");
         cout << "\n===== Tambah Server Baru =====" << endl;
+        cout << "Rack: " << selectedRack.id << endl;
+        cout << "Progress: Menambahkan server " << (i + 1) << " dari " << serverCount << endl;
         cout << "============================" << endl;
-        cout << "| Server berhasil ditambahkan ke Rack " << dataCenter.rack[row][colum].id << endl;
-        cout << "| Server ID: " << newServer.id << endl;
-        cout << "| Baris: " << (row + 1) << endl;
-        cout << "| Kolom: " << (colum + 1) << endl;
-        cout << "============================" << endl;
+        ServerUnit newServer;
+        displayServerInputForm(newServer);
+        if (addServer(selectedRack,newServer))
+        {
+            succefullyAdded++;
+            system("cls");
+            cout << "\n===== Tambah Server Baru =====" << endl;
+            cout << "============================" << endl;
+            cout << "| Server berhasil ditambahkan" << endl;
+            cout << "| Server ID: " << newServer.id << endl;
+            cout << "| Rack: " << selectedRack.id << endl;
+            cout << "| Progress: " << succefullyAdded << "/" << serverCount << " server ditambahkan" << endl;
+            cout << "============================" << endl;
+            if (i < serverCount - 1)
+            {
+                char continueChoice;
+                cout << "\nApakah Anda ingin menambahkan server lagi? (y/n): ";
+                cin >> continueChoice;
+                if (continueChoice == 'n' || continueChoice == 'N')
+                {
+                    continueAdding = false;
+                    cout << "\nPenambahan server dihentikan oleh user." << endl;
+                }
+            }
+            if (continueAdding && i < serverCount - 1)
+            {
+                cout << "\nTekan Enter untuk melanjutkan ke server berikutnya...";
+                cin.ignore();
+                cin.get();
+            }
+        }
+        else 
+        {
+            cout << "\nError: Gagal menambahkan server!" << endl;
+            cout << "Tekan Enter untuk melanjutkan...";
+            cin.ignore();
+            cin.get();
+        }
     }
-    cout << "\n\nTekan Enter untuk kembali...";
-    cin.ignore();
-    cin.get();
-    return;
+    system("cls");
+    cout << "\n===== Ringkasan Penambahan Server =====" << endl;
+    cout << "============================" << endl;
+    cout << "| Rack: " << selectedRack.id << endl;
+    cout << "| Server berhasil ditambahkan: " << succefullyAdded << "/" << serverCount << endl;
+    cout << "| Total server dalam rack: " << selectedRack.serverCount << "/" << selectedRack.maxCapacity << endl;
+    cout << "============================" << endl;
+    char retryChoice;
+    cout << "\nApakah Anda ingin menambah server ke rack lain? (y/n): ";
+    cin >> retryChoice;
+    if (retryChoice == 'y' || retryChoice == 'Y')
+    {
+        cout << "\nKembali ke pemilihan rack..." << endl;
+        cout << "Tekan Enter untuk melanjutkan...";
+        cin.ignore();
+        cin.get();
+        addNewServer(); // Rekursif
+    } else
+    {
+        cout << "\nKembali ke menu manajemen server..." << endl;
+        cout << "Tekan Enter untuk melanjutkan...";
+        cin.ignore();
+        cin.get();
+    }
 }
 void removeExistingServer()
 {
@@ -1512,7 +1557,7 @@ void updateServerStatus()
     }
     cout << "+-------+------------+--------------+" << endl;
     int serverIndex;
-    cout << "Masukkan nomor server [1-" << rack.serverCount << "]: "; // ADD THIS LINE
+    cout << "Masukkan nomor server [1-" << rack.serverCount << "]: ";
     cin >> serverIndex;
     if (cin.fail() || serverIndex < 1 || serverIndex > rack.serverCount)
     {
@@ -1657,7 +1702,7 @@ void updateServerUtilization()
     }
     cout << "+-------+------------+--------------+" << endl;
     int serverIndex;
-    cout << "Masukkan nomor server [1-" << rack.serverCount << "]: "; // ADD THIS LINE
+    cout << "Masukkan nomor server [1-" << rack.serverCount << "]: "; 
     cin >> serverIndex;
     if (cin.fail() || serverIndex < 1 || serverIndex > rack.serverCount)
     {
@@ -1713,12 +1758,13 @@ void displayServerInputForm(ServerUnit& server)
     int typeChoice;
     int statusChoice;
     system("cls");
-    cout << "\n===== Tambah Server Baru =====" << endl;
+    cout << "\n===== Input Data Server =====" << endl;
     cout << "| Masukkan ID Server: ";
     cin.ignore();
     getline(cin, server.id);
     system("cls");
-    cout << "\n===== Tambah Server Baru =====" << endl;
+    cout << "\n===== Input Data Server =====" << endl;
+    cout << "| Server ID: " << server.id << endl;
     cout << "| Pilih Tipe Server:" << endl;
     cout << "| 1. Web Server" << endl;
     cout << "| 2. Database Server" << endl;
@@ -1745,7 +1791,9 @@ void displayServerInputForm(ServerUnit& server)
         break;
     }
     system("cls");
-    cout << "\n===== Tambah Server Baru =====" << endl;
+    cout << "\n===== Input Data Server =====" << endl;
+    cout << "| Server ID: " << server.id << endl;
+    cout << "| Tipe: " << (server.type == Web ? "Web" : server.type == Database ? "Database" : server.type == Application ? "Application" : server.type == File ? "File" : "UnCategorized") << endl;
     cout << "| Pilih Status Server:" << endl;
     cout << "| 1. Offline" << endl;
     cout << "| 2. Online" << endl;
@@ -1768,7 +1816,11 @@ void displayServerInputForm(ServerUnit& server)
         break;
     }
     system("cls");
-    cout << "\n===== Tambah Server Baru =====" << endl;
+    cout << "\n===== Input Data Server =====" << endl;
+    cout << "| Server ID: " << server.id << endl;
+    cout << "| Tipe: " << (server.type == Web ? "Web" : server.type == Database ? "Database" :  server.type == File ? "File" : "UnCategorized") << endl;
+    cout << "| Status: " << (server.status == Online ? "Online" : server.status == Offline ? "Offline" : server.status == Maintanance ? "Maintenance" : "Unknown") << endl;
+    cout << "============================" << endl;
     cout << "| Masukkan Utilisasi (0-100%): ";
     cin >> server.utilization;
     cout << "| Masukkan Kapasitas Storage (GB): ";
@@ -1788,32 +1840,837 @@ void displayServerInputForm(ServerUnit& server)
 }
 
 // Fungsi Search dan Filter ***PlaceHolder WIP***
-void searchAndFilter()
+void search()
 {
-    cout << "\n=== Pencarian & Filter ===" << endl;
-    cout << "Fitur ini belum diimplementasikan." << endl;
-    cout << "\nTekan Enter untuk kembali ke menu utama...";
+    int choice;
+    bool exit = false;
+    do 
+    {
+        system("cls");
+        cout << "\n===== Pencarian =====" << endl;
+        cout << "1. Cari Server Berdasarkan Tipe (Sequential)" << endl;
+        cout << "2. Cari Server Berdasarkan Available Storage (Binary Search)" << endl;
+        cout << "3. Cari Server Berdasarkan Status (Sequential)" << endl;
+        cout << "4. Cari Server Berdasarkan ID (Binary Search)" << endl;
+        cout << "5. Kembali ke Menu Utama" << endl;
+        cout << "Pilih opsi [1-5]: ";
+        cin >> choice;
+        if (cin.fail())
+        {
+            cin.clear();
+            cin.ignore(1000, '\n');
+            cout << "Input tidak valid. Silakan coba lagi." << endl;
+            cout << "Tekan Enter untuk melanjutkan...";
+            cin.get();
+            continue;
+        }
+        switch (choice)
+        {
+        case 1:
+            findServerByType();
+            break;
+        case 2:
+            findAvailableStorage();
+            break;
+        case 3:
+            findServersByStatus();
+            break;
+        case 4:
+            findServerById();
+            break;
+        case 5:
+            exit = true;
+            break;
+        default:
+            cout << "Pilihan tidak valid. Tekan Enter untuk melanjutkan...";
+            cin.ignore();
+            cin.get();
+            break;
+            break;
+        }
+    } while (!exit);
+}
+void findServerByType()
+{
+    system("cls");
+    cout << "\n===== Pencarian =====" << endl;
+    cout << "Curently PlaceHolder" << endl;
+
+}
+void findAvailableStorage()
+{
+    system("cls");
+    cout << "\n===== Pencarian =====" << endl;
+    cout << "Metode Searching: Binary Search" << endl;
+    cout << "Mencari server berdasarkan Available Storage" << endl;
+    cout << "============================" << endl;
+    ServerUnit allServers[320];
+    string rackInfo[320];
+    int totalCount = 0;
+
+    collectAllServersWithRackInfo(allServers, rackInfo, totalCount);
+    if (totalCount == 0)
+    {
+        cout << "Tidak ada server yang ditemukan." << endl;
+        cout << "Tekan Enter untuk kembali...";
+        cin.ignore();
+        cin.get();
+        return;
+    }
+    double targetStorage;
+    cout << "Total server dalam data center: " << totalCount << endl;
+    cout << "\nMasukkan minimum Available Storage yang dicari (GB): ";
+    cin >> targetStorage;
+    if (cin.fail())
+    {
+        cin.clear();
+        cin.ignore(1000, '\n');
+        cout << "Input tidak valid!" << endl;
+        cout << "Tekan Enter untuk kembali...";
+        cin.get();
+        return;
+    }
+    quickSortServersDescending(allServers, 0, totalCount - 1, 2);
+    for (int i = 0; i < totalCount / 2; i++)
+    {
+        swapServers(&allServers[i], &allServers[totalCount - 1 - i]);
+        string temp = rackInfo[i];
+        rackInfo[i] = rackInfo[totalCount - 1 - i];
+        rackInfo[totalCount - 1 - i] = temp;
+    }
+    int left = 0;
+    int right = totalCount - 1;
+    int result = -1;
+    while (left <= right)
+    {
+        int mid = left + (right - left) / 2;
+        if (allServers[mid].availableStorage >= targetStorage)
+        {
+            result = mid;
+            right = mid - 1;
+        }
+        else
+        {
+            left = mid + 1;
+        }
+    }
+    system("cls");
+    cout << "\n===== Hasil Pencarian =====" << endl;
+    if (result == -1)
+    {
+        cout << "Tidak ada server dengan Available Storage (lebih kecil dari) " << targetStorage << " GB ditemukan." << endl;
+    }
+    else
+    {
+        int matchCount = 0;
+        for (int i = 0; i <= result && allServers[i].availableStorage <= targetStorage; i++)
+        {
+            matchCount++;
+        }
+        cout << "Server dengan Available Storage (lebih kecil dari) " << targetStorage << " GB: " << matchCount << " server" << endl;
+        cout << "============================" << endl;
+        cout << "+---------+-------------+-------------------+---------------+------------+--------+" << endl;
+        cout << "| Rack    | Server ID   | Available Storage | Total Storage | CPU Cores  | RAM    |" << endl;
+        cout << "+---------+-------------+-------------------+---------------+------------+--------+" << endl;
+        for (int i = 0; i <= result && allServers[i].availableStorage <= targetStorage; i++)
+        {
+            if (i < 20)
+            {
+                // memastikan formating bener
+                string rackStr = rackInfo[i];
+                string serverIdStr = allServers[i].id;
+                string availStorageStr = to_string((int)allServers[i].availableStorage);
+                string totalStorageStr = to_string((int)allServers[i].stroageCapacity);
+                string cpuCoresStr = to_string(allServers[i].cpuCores);
+                string ramStr = to_string(allServers[i].ram);
+                if (rackStr.length() < 7) rackStr.resize(7, ' '); //padding
+                if (serverIdStr.length() < 11) serverIdStr.resize(11, ' ');
+                if (availStorageStr.length() < 17) {
+                    string temp = availStorageStr;
+                    availStorageStr = string(17 - temp.length(), ' ') + temp;
+                }
+                if (totalStorageStr.length() < 13) {
+                    string temp = totalStorageStr;
+                    totalStorageStr = string(13 - temp.length(), ' ') + temp;
+                }
+                if (cpuCoresStr.length() < 10) {
+                    string temp = cpuCoresStr;
+                    cpuCoresStr = string(10 - temp.length(), ' ') + temp;
+                }
+                if (ramStr.length() < 6) {
+                    string temp = ramStr;
+                    ramStr = string(6 - temp.length(), ' ') + temp;
+                }
+                
+                cout << "| " << rackStr << " | " << serverIdStr << " | " << availStorageStr 
+                     << " | " << totalStorageStr << " | " << cpuCoresStr << " | " << ramStr << " |" << endl;
+            }
+        }
+        if (matchCount > 20)
+        {
+            cout << "| ...dan " << (matchCount - 20) << " server lainnya" << setw(67) << right << "|" << endl;
+        }
+        
+        cout << "+---------+-------------+-------------------+---------------+------------+--------+" << endl;
+        cout << "\n=== Statistik Pencarian ===" << endl;
+        cout << "Total server ditemukan: " << matchCount << endl;
+    }
+    cout << "\nTekan Enter untuk kembali...";
     cin.ignore();
+    cin.get();
+}
+void findServersByStatus()
+{
+    system("cls");
+    cout << "\n===== Pencarian =====" << endl;
+    cout << "Curently PlaceHolder" << endl;
+}
+void findServerById()
+{
+    system("cls");
+    cout << "\n===== Pencarian =====" << endl;
+    cout << "Metode Searching: Binary Search" << endl;
+    cout << "Mencari server berdasarkan ID" <<endl;
+    cout << "============================" << endl;
+    ServerUnit allServers[320];
+    string rackInfo[320];
+    int totalCount = 0;
+    collectAllServersWithRackInfo(allServers, rackInfo, totalCount);
+    if (totalCount == 0)
+    {
+        cout << "Tidak ada server dalam data center" << endl;
+        cout << "Tekan Enter untuk kembali...";
+        cin.ignore();
+        cin.get();
+        return;
+    }
+    string targetId;
+    cout << "Total server dalam data center: " << totalCount << endl;
+    cout << "\nMasukkan Server ID yang dicari: ";
+    cin.ignore();
+    getline(cin, targetId);
+    for (int i = 0; i < targetId.length(); i++) // konversi ID ke kapital
+    {
+        targetId[i] = toupper(targetId[i]);
+    }
+    // Pakai Bubble Sort karena malas buat quicksort yang bisa string xd
+    for (int i = 0; i < totalCount; i++)
+    {
+        for (int j = 0; j < totalCount - i - 1; j++)
+        {
+            string id1 = allServers[j].id;
+            string id2 = allServers[j + 1].id;
+
+            for (int k = 0; k < id1.length(); k++)
+            {
+                id1[k] = toupper(id1[k]);
+            }
+            for (int k = 0; k < id2.length(); k++)
+            {
+                id2[k] = toupper(id2[k]);
+            }
+            if (id1 > id2)
+            {
+                swapServers(&allServers[j], &allServers[j + 1]);
+                string temp = rackInfo[j];
+                rackInfo[j] = rackInfo[j + 1];
+                rackInfo[j + 1] = temp;
+            }
+        }   
+    }
+    int left = 0;
+    int right = totalCount - 1;
+    int result = -1;
+    while (left <= right)
+    {
+        int mid = left + (right - left) / 2;
+        string currentId = allServers[mid].id;
+        for (int i = 0; i < currentId.length(); i++)
+        {
+            currentId[i] = toupper(currentId[i]);
+        }
+        if (currentId == targetId)
+        {
+            result = mid;
+            break;
+        }
+        else if (currentId < targetId)
+        {
+            left = mid + 1;
+        }
+        else
+        {
+            right = mid - 1;
+        }
+    }
+    system("cls");
+    cout << "\n===== Hasil Pencarian Server ID =====" << endl;
+    if (result == -1)
+    {
+        cout << "Server dengan ID \"" << targetId << "\" tidak ditemukan." << endl;
+        cout << "============================" << endl;
+    } else
+    {
+        ServerUnit& foundServer = allServers[result];
+        cout << "Server dengan ID \"" << targetId << "\" ditemukan!" << endl;
+        cout << "============================" << endl;
+        string statusString;
+        string typeString;
+        switch (foundServer.type)
+        {
+        case Web: 
+            typeString = "Web"; 
+            break;
+        case Database: 
+            typeString = "Database"; 
+            break;
+        case Application: 
+            typeString = "Application";
+            break;
+        case File: 
+            typeString = "File"; 
+            break;
+        default: 
+            typeString = "Unknown"; 
+            break;
+        }
+        switch (foundServer.status)
+        {
+            case Online:
+                statusString = "Online";
+                break;
+            case Offline:
+                statusString = "Offline";
+                break;
+            case Maintanance:
+                statusString = "Maintanance";
+                break;
+            default:
+                statusString = "Unknown";
+                break;
+        }
+        cout << "| Server ID              : " << foundServer.id << endl;
+        cout << "| Rack Location          : " << rackInfo[result] << endl;
+        cout << "| Model                  : " << foundServer.model << endl;
+        cout << "| Type                   : " << typeString << endl;
+        cout << "| Status                 : " << statusString << endl;
+        cout << "| IP Address             : " << foundServer.ipAddress << endl;
+        cout << "============================" << endl;
+        cout << "| CPU Cores              : " << foundServer.cpuCores << endl;
+        cout << "| RAM                    : " << foundServer.ram << " GB" << endl;
+        cout << "| Total Storage          : " << (int)foundServer.stroageCapacity << " GB" << endl;
+        cout << "| Available Storage      : " << (int)foundServer.availableStorage << " GB" << endl;
+        cout << "| Utilization            : " << foundServer.utilization << "%" << endl;
+        cout << "============================" << endl;
+        
+        cout << "\n=== Statistik Pencarian ===" << endl;
+        cout << "Status: Server ditemukan" << endl;
+    }
+    cout << "\nTekan Enter untuk kembali...";
     cin.get();
 }
 
 // Fungsi Sort Data ***PlaceHolder WIP***
 void sortData()
 {
-    cout << "\n=== Pengurutan Data ===" << endl;
-    cout << "Fitur ini belum diimplementasikan." << endl;
-    cout << "\nTekan Enter untuk kembali ke menu utama...";
-    cin.ignore();
-    cin.get();
+    int sortChoice;
+    int criteriaChoice;
+    bool exit = false;
+    do 
+    {
+        system("cls");
+        cout << "\n===== Pengurutan Data =====" << endl;
+        cout << "1. Quick Sort (Descending)" << endl;
+        cout << "2. Insertion Sort (Ascending)" << endl;
+        cout << "3. Kembali ke Menu Utama" << endl;
+        cout << "Pilih opsi [1-3]: ";
+        cin >> sortChoice;
+        if (cin.fail()) 
+        {
+            cin.clear();
+            cin.ignore(1000, '\n');
+            cout << "Input tidak valid. Silakan coba lagi." << endl;
+            cout << "Tekan Enter untuk melanjutkan...";
+            cin.get();
+            continue;
+        }
+        if (sortChoice == 3) 
+        {
+            exit = true;
+            continue;
+        }
+        if (sortChoice == 1 || sortChoice == 2)
+        {
+            system("cls");
+            cout << "\n===== Pengurutan Data =====" << endl;
+            if (sortChoice == 1)
+            {
+                cout << "Sorting: Quick Sort (Descending)" << endl;
+            }
+            else
+            {
+                cout << "Sorting: Insertion Sort (Ascending)" << endl;
+            }
+            cout << "\nPilih kriteria Sorting:" << endl;
+            cout << "1. Utilisasi Server (%)\n";
+            cout << "2. Available Storage (GB)\n";
+            cout << "3. Total Storage Capacity (GB)\n";
+            cout << "4. CPU Cores\n";
+            cout << "5. RAM (GB)\n";
+            cout << "6. Kembali\n";
+            cout << "Pilih opsi [1-6]: ";
+            cin >> criteriaChoice;
+            if (cin.fail()) 
+            {
+                cin.clear();
+                cin.ignore(1000, '\n');
+                cout << "Input tidak valid. Silakan coba lagi." << endl;
+                cout << "Tekan Enter untuk melanjutkan...";
+                cin.get();
+                continue;
+            }
+            if (criteriaChoice == 6)
+            {
+                continue;
+            }
+            if (criteriaChoice >= 1 && criteriaChoice <= 5)
+            {
+                ServerUnit allServers[320];
+                string rackInfo[320];
+                int totalCount = 0;
+                collectAllServersWithRackInfo(allServers, rackInfo, totalCount);
+                if (totalCount == 0)
+                {
+                    system("cls");
+                    cout << "\n===== Pengurutan Data =====" << endl;
+                    cout << "Tidak ada server untuk diurutkan" << endl;
+                    cout << "\nTekan Enter untuk kembali...";
+                    cin.ignore();
+                    cin.get();
+                    continue;
+                }
+                system("cls");
+                cout << "\n===== Pengurutan Data =====" << endl;
+                cout << "Total server ditemukan: " << totalCount << endl;
+                string criteriaName;
+                switch (criteriaChoice)
+                {
+                case 1:
+                    criteriaName = "Utilisasi Server (%)";
+                    break;
+                case 2:
+                    criteriaName = "Available Storage (GB)";
+                    break;
+                case 3:
+                    criteriaName = "Total Storage (GB)";
+                    break;
+                case 4:
+                    criteriaName = "CPU Cores";
+                    break;
+                case 5:
+                    criteriaName = "RAM (GB)";
+                    break;
+                }
+                cout << "Kriteria: " << criteriaName << endl;
+                cout << "============================" << endl;
+                cout << "\n===== Data Sebelum Pengurutan =====" << endl;
+                cout << "+--------+------------+-----------+-------------------+---------------+------------+--------+" << endl;
+                cout << "| Rack   | Server ID  | Utilisasi | Available Storage | Total Storage | CPU Cores  | RAM    |" << endl;
+                cout << "+--------+------------+-----------+-------------------+---------------+------------+--------+" << endl;
+                for (int i = 0; i < min(20, totalCount); i++)
+                {
+                    cout << "| " << setw(6) << left << rackInfo[i] << " | "
+                         << setw(10) << left << allServers[i].id << " | "
+                         << setw(9) << left << allServers[i].utilization << " | "
+                         << setw(17) << left << (int)allServers[i].availableStorage << " | "
+                         << setw(13) << left << (int)allServers[i].stroageCapacity << " | "
+                         << setw(10) << left << allServers[i].cpuCores << " | "
+                         << setw(6) << left << allServers[i].ram << " |" << endl;
+                }
+                if (totalCount > 20)
+                {
+                    cout << "| ...dan " << (totalCount - 20) << " server lainnya" << setw(65) << " |" << endl;
+                }
+                cout << "+--------+------------+-----------+-------------------+---------------+------------+--------+" << endl;
+                cout << "\nTekan Enter untuk melanjutkan...";
+                cin.ignore();
+                cin.get();
+                if (sortChoice == 1)
+                {
+                    quickSortServersDescending( allServers, 0, totalCount - 1, criteriaChoice);
+                } else
+                {
+                    insertionSortServersAscending(allServers, totalCount, criteriaChoice);
+                }
+                system("cls");
+                cout << "\n=== Pengurutan Data ===" << endl;
+                cout << "Pengurutan berdasarkan " << criteriaName << endl;
+                cout << "Sorting: " << (sortChoice == 1 ? "Quick Sort (Descending)" : "Insertion Sort (Ascending)") << endl;
+                cout << "\n===== Data Setelah Pengurutan =====" << endl;
+                cout << "+--------+------------+-----------+-------------------+---------------+------------+--------+" << endl;
+                cout << "| Rack   | Server ID  | Utilisasi | Available Storage | Total Storage | CPU Cores  | RAM    |" << endl;
+                cout << "+--------+------------+-----------+-------------------+---------------+------------+--------+" << endl;
+                
+                for (int i = 0; i < min(20, totalCount); i++) // Show first 15 sorted servers
+                {
+                    cout << "| " << setw(6) << left << rackInfo[i] << " | "
+                         << setw(10) << left << allServers[i].id << " | "
+                         << setw(9) << left << allServers[i].utilization << " | "
+                         << setw(17) << left << (int)allServers[i].availableStorage << " | "
+                         << setw(13) << left << (int)allServers[i].stroageCapacity << " | "
+                         << setw(10) << left << allServers[i].cpuCores << " | "
+                         << setw(6) << left << allServers[i].ram << " |" << endl;
+                }
+                
+                if (totalCount > 20)
+                {
+                    cout << "| ...dan " << (totalCount - 15) << " server lainnya" << setw(65) << " |" << endl;
+                }
+                cout << "+--------+------------+-----------+------------------+---------------+------------+---------+" << endl;
+                cout << "\n=== Statistik Pengurutan ===" << endl;
+                cout << "| Total server diurutkan: " << totalCount << endl;
+                if (sortChoice == 1 && totalCount > 0)
+                {
+                    cout << "| Nilai tertinggi: ";
+                    switch (criteriaChoice)
+                    {
+                    case 1:
+                        cout << allServers[0].utilization << "%";
+                        break;
+                    case 2:
+                        cout << (int)allServers[0].availableStorage << " GB";
+                        break;
+                    case 3:
+                        cout << (int)allServers[0].stroageCapacity << " GB";
+                        break;
+                    case 4:
+                        cout << allServers[0].cpuCores << " Cores";
+                        break;
+                    case 5:
+                        cout << allServers[0].ram << " GB";
+                        break;
+                    }
+                    cout << " (Sever: " << allServers[0].id << ")" << endl;
+                    cout << "| Nilai terendah: ";
+                    switch (criteriaChoice)
+                    {
+                        case 1: 
+                            cout << allServers[totalCount-1].utilization << "%"; 
+                            break;
+                        case 2: 
+                            cout << (int)allServers[totalCount-1].availableStorage << " GB"; 
+                            break;
+                        case 3: 
+                            cout << (int)allServers[totalCount-1].stroageCapacity << " GB"; 
+                            break;
+                        case 4: 
+                            cout << allServers[totalCount-1].cpuCores << " cores"; 
+                            break;
+                        case 5: 
+                            cout << allServers[totalCount-1].ram << " GB"; 
+                            break;
+                    }
+                    cout << " (Server: " << allServers[totalCount-1].id << ")" << endl;
+                }
+                cout << "\nTekan Enter untuk kembali...";
+                cin.get();
+            } else
+            {
+                cout << "Kriteria tidak valid. Tekan Enter untuk melanjutkan...";
+                cin.ignore();
+                cin.get();
+            }
+        }
+        else
+        {
+            cout << "Pilihan tidak valid. Tekan Enter untuk melanjutkan...";
+            cin.ignore();
+            cin.get();
+        }
+    } while (!exit);
+}
+void quickSortServersDescending(ServerUnit servers[], int low, int high, int sortBy)
+{
+    if (low < high) 
+    {
+        int pivotIndex = partitionForQuickSort(servers, low, high, sortBy);
+        quickSortServersDescending(servers, low, pivotIndex - 1, sortBy);
+        quickSortServersDescending(servers, pivotIndex + 1, high, sortBy);
+    }
+}
+int partitionForQuickSort(ServerUnit servers[], int low, int high, int sortBy)
+{
+    float pivot;
+    switch (sortBy)
+    {
+        case 1:
+            pivot = servers[high].utilization;
+            break;
+        case 2:
+            pivot = (float)servers[high].availableStorage;
+            break;
+        case 3:
+            pivot = (float)servers[high].stroageCapacity;
+            break;
+        case 4:
+            pivot = (float)servers[high].cpuCores;
+            break;
+        case 5:
+            pivot = (float)servers[high].ram;
+            break;
+        default:
+            cout << "Invalid sort option!" << endl;
+            break;    
+    }
+    int i = low - 1;
+    for (int j = low; j <= high - 1; j++)
+    {
+        float currentValue;
+        switch (sortBy)
+        {
+            case 1:
+                currentValue = servers[j].utilization;
+                break;
+            case 2:
+                currentValue = (float)servers[j].availableStorage;
+                break;
+            case 3:
+                currentValue = (float)servers[j].stroageCapacity;
+                break;
+            case 4:
+                currentValue = (float)servers[j].cpuCores;
+                break;
+            case 5:
+                currentValue = (float)servers[j].ram;
+                break;
+            default:
+                break; 
+        }
+        if (currentValue > pivot) // untuk descending
+        {
+            i++;
+            swapServers(&servers[i], &servers[j]);
+        }
+    }
+    swapServers(&servers[i + 1], &servers[high]);
+    return(i + 1);
+}
+
+// function untuk menukar dua server dengan pointer
+void swapServers(ServerUnit* a, ServerUnit* b)
+{
+    ServerUnit temp = *a;
+    *a = *b;
+    *b = temp;
+
+}
+// function untuk mengumpulkan semua server dari rack
+void collectAllServersWithRackInfo(ServerUnit allServers[], string rackInfo[], int& totalCount)
+{
+    totalCount = 0;
+    for (int r = 0; r < DataCenter::Row; r++)
+    {
+        for (int c = 0; c < DataCenter::Colum; c++)
+        {
+            if (r == 2 || r == 5 || c == 2 || c == 5)
+            continue;
+            for (int s = 0; s < dataCenter.rack[r][c].serverCount; s++)
+            {
+                allServers[totalCount] = dataCenter.rack[r][c].servers[s];
+                rackInfo[totalCount] = dataCenter.rack[r][c].id;
+                totalCount++;
+            }
+        }
+    }
+}
+void insertionSortServersAscending(ServerUnit servers[], int size, int sortBy)
+{
+    cout << "PlaceHolder" << endl;
 }
 
 // Fungsi Generate Reports ***PlaceHolder WIP***
 void generateReports()
 {
-    cout << "\n=== Laporan & Statistik ===" << endl;
-    cout << "Fitur ini belum diimplementasikan." << endl;
-    cout << "\nTekan Enter untuk kembali ke menu utama...";
+    system("cls");
+    cout << "\n===== Laporan =====" << endl;
+    string fileName;
+    cout << "Masukkan nama file laporan (tanpa ekstensi .txt): ";
     cin.ignore();
+    getline(cin, fileName);
+    fileName += "_report.txt";
+    ofstream reportFile(fileName);
+    if (!reportFile.is_open())
+    {
+        cout << "Error: Tidak dapat membuat file laporan!" << endl;
+        cout << "Tekan Enter untuk kembali...";
+        cin.get();
+        return;
+    }
+    // Header untuk Laporan
+    reportFile << "===============================================" << endl;
+    reportFile << "         DATA CENTER MANAGEMENT REPORT        " << endl;
+    reportFile << "===============================================" << endl;
+    reportFile << "Report Generated: " << getCurrentDateTime() << endl;
+    reportFile << "===============================================" << endl << endl;
+    reportFile << "=== DATA CENTER INFORMATION ===" << endl; 
+    reportFile << "Name: " << dataCenter.name << endl;
+    reportFile << "Location: " << dataCenter.location << endl;
+    reportFile << "Total Racks Available: " << (DataCenter::Row * DataCenter::Colum) - 16 << " racks" << endl; // Minus walkways
+    reportFile << endl;
+
+    int totalServers = 0;
+    int activeServers = 0;
+    int offlineServers = 0;
+    int maintenanceServers = 0;
+    int racksWithServers = 0;
+    double totalStorage = 0.0;
+    double availableStorage = 0.0;
+
+    for (int r = 0; r < DataCenter::Row; r++)
+    {
+        for (int c = 0; c < DataCenter::Colum; c++)
+        {
+            if (r == 2 || r == 5 || c == 2 || c == 5)
+            continue;
+            {
+                if (dataCenter.rack[r][c].serverCount > 0)
+                {
+                    racksWithServers++;
+                    totalServers += dataCenter.rack[r][c].serverCount;
+                    for (int s = 0; s < dataCenter.rack[r][c].serverCount; s++)
+                    {
+                        ServerUnit& server = dataCenter.rack[r][c].servers[s];
+                        totalStorage += server.stroageCapacity;
+                        availableStorage += server.availableStorage;
+                        switch (server.status)
+                        {
+                            case Online:
+                                activeServers++;
+                                break;
+                            case Offline:
+                                offlineServers++;
+                                break;
+                            case Maintanance:
+                                maintenanceServers++;
+                                break;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    reportFile << "=== SERVER STATISTICS ===" << endl;
+    reportFile << "Total Servers: " << totalServers << endl;
+    reportFile << "Active Servers: " << activeServers << "/" << totalServers;
+    if (totalServers > 0)
+    {
+        reportFile << " (" << (float)activeServers/totalServers*100 << "%)";
+    }
+    reportFile << endl;
+    reportFile << "Offline Servers: " << offlineServers << endl;
+    reportFile << "Maintenance Servers: " << maintenanceServers << endl;
+    reportFile << "Racks in Use: " << racksWithServers << "/" << (DataCenter::Row * DataCenter::Colum - 16) << endl;
+    reportFile << "Total Storage Capacity: " << (int)totalStorage << " GB" << endl;
+    reportFile << "Available Storage: " << (int)availableStorage << " GB" << endl;
+    reportFile << "Storage Utilization: ";
+    if (totalStorage > 0)
+    {
+        reportFile << (int)((totalStorage - availableStorage) / totalStorage * 100) << "%";
+    }
+    else
+    {
+        reportFile << "0%";
+    }
+    reportFile << endl << endl;
+    reportFile << "=== DETAILED RACK INFORMATION ===" << endl;
+    bool hasServers = false;
+    for (int r = 0; r < DataCenter::Row; r++)
+    {
+        for (int c = 0; c < DataCenter::Colum; c++)
+        {
+            if (r == 2 || r == 5 || c == 2 || c == 5) continue;
+            ServerRack& rack = dataCenter.rack[r][c];
+            if (rack.serverCount > 0)
+            {
+                hasServers = true;
+                reportFile << endl;
+                reportFile << "--- Rack ID: " << rack.id << " ---" << endl;
+                reportFile << "Location: " << rack.location << endl;
+                reportFile << "Capacity: " << rack.serverCount << "/" << rack.maxCapacity << " servers" << endl;
+                reportFile << "Status: " << (rack.operationalStatus ? "Operational" : "Not Operational") << endl;
+                reportFile << endl;
+                reportFile << "+------------+---------------+-----------+-------------------+---------------+------------+--------+" << endl;
+                reportFile << "| Server ID  | Type          | Status    | Available Storage | Total Storage | CPU Cores  | RAM    |" << endl;
+                reportFile << "+------------+---------------+-----------+-------------------+---------------+------------+--------+" << endl;
+                for (int s = 0; s < rack.serverCount; s++)
+                {
+                    ServerUnit& server = rack.servers[s];
+                    string typeString;
+                    string statusString;
+                    switch (server.type)
+                    {
+                        case Web:
+                            typeString = "Web";
+                            break;
+                        case Database:
+                            typeString = "Database";
+                            break;
+                        case Application:
+                            typeString = "Application";
+                            break;
+                        case File:
+                            typeString = "File";
+                            break;    
+                        default:
+                            typeString = "UnCategorized";
+                            break;
+                    }
+
+                    switch (server.status)
+                    {
+                        case Online:
+                            statusString = "Online";
+                            break;
+                        case Offline:
+                            statusString = "Offline";
+                            break;
+                        case Maintanance:
+                            statusString = "Maintenance";
+                            break;
+                        default:
+                            statusString = "Unknown";
+                            break;    
+                    }
+                    reportFile << "| ";
+                    reportFile << left << setw(10) << server.id.substr(0, 10) << " | ";
+                    reportFile << left << setw(13) << typeString << " | ";
+                    reportFile << left << setw(9) << statusString << " | ";
+                    reportFile << right << setw(17) << (int)server.availableStorage << " | ";
+                    reportFile << right << setw(13) << (int)server.stroageCapacity << " | ";
+                    reportFile << right << setw(10) << server.cpuCores << " | ";
+                    reportFile << right << setw(6) << server.ram << " |" << endl;
+                }
+                reportFile << "+------------+---------------+-----------+-------------------+---------------+------------+--------+" << endl;
+            }
+        }
+    }
+    if (!hasServers)
+    {
+        reportFile << "No servers found in any rack." << endl;
+    }
+    reportFile << endl;
+    reportFile << "===============================================" << endl;
+    reportFile << "          END OF REPORT                       " << endl;
+    reportFile << "===============================================" << endl;
+    reportFile.close();
+    system("cls");
+    cout << "\n===== Laporan =====" << endl;
+    cout << "Laporan berhasil dibuat!" << endl;
+    cout << "File: " << fileName << endl;
+    cout << "Total Servers: " << totalServers << endl;
+    cout << "Active Servers: " << activeServers << "/" << totalServers << endl;
+    cout << "Racks with Servers: " << racksWithServers << endl;
+    cout << "\nTekan Enter untuk kembali ke menu utama...";
     cin.get();
 }
 
@@ -1922,12 +2779,3 @@ void backupAndRestore()
     } while (!exit);
 }
 
-// Fungsi Optimize Rack Layout ***PlaceHolder WIP***
-void optimizeRackLayout()
-{
-    cout << "\n=== Optimasi Penataan Rak ===" << endl;
-    cout << "Fitur ini belum diimplementasikan." << endl;
-    cout << "\nTekan Enter untuk kembali ke menu utama...";
-    cin.ignore();
-    cin.get();
-}

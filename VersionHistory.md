@@ -52,6 +52,7 @@ Devolpement Data Center Managment System DCMS
         - Added locations and name of the datacenter on DisplayDataCenterMap
         - Added Test.txt for testing with 0 data
         - Important DataCenterData.txt is a default Data dont change it
+        - Remove Vector Usage
 - 0.7 = Manajamen Server Update
         -Added DisplaySimpleDataCenterMap
         -Added addNewServer
@@ -63,6 +64,30 @@ Devolpement Data Center Managment System DCMS
         -Added Various ability to manage Server
         -Added test.backup.txt (for testing only this is only a placeholder)
         -Modified test.txt (only a placeholder)
+- 0.8 = Sorting Update
+        -Added quickSortServersDescending
+        -Added partitionForQuickSort
+        -Added swapServers
+        -Added collectAllServersWithRackInfo
+        -Added insertionSortServersAscending
+        -Added Quicksort
+        -Straight ins currently only a placeHolder
+        -Fixed some display issue
+        -Modified AddNewServer to be Recursive and can add more server than one
+        -Modified test.txt (with more data inside)
+        -Modified Fungsi.txt
+- 0.9 = Searching (Partly) and Generate Report
+        -Modified search
+        -Added findServerByType (still placeholder)
+        -Added findAvailableStorage
+        -Added findServersByStatus (still placeholder)
+        -Added findServerById
+        -Modifed generateReport
+        -output test_report.txt (from generate Report)
+        -Modified test.txt (with more data added)
+        -Modified Structure.md
+        -Modified fungsi.txt
+        -Remove Optimizations
 
 
 (released) Version History <aiming for v 1.0 Released>
