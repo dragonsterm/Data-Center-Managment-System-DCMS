@@ -2485,7 +2485,92 @@ void collectAllServersWithRackInfo(ServerUnit allServers[], string rackInfo[], i
 }
 void insertionSortServersAscending(ServerUnit servers[], int size, int sortBy)
 {
-    cout << "PlaceHolder" << endl;
+    cout << "\n===== Proses Sorting (Ascending - Insertion Sort) =====" << endl;
+    cout << "Berdasarkan: ";
+    switch (sortBy)
+    {
+    case 0:
+        cout << "ID Server\n";
+        break;
+    case 1:
+        cout << "Utilisasi (%)\n";
+        break;
+    case 2:
+        cout << "Available Storage (GB)\n";
+        break;
+    case 3:
+        cout << "CPU Cores\n";
+        break;
+    case 4:
+        cout << "RAM (GB)\n";
+        break;
+    default:
+        cout << "Unknown\n";
+        return;
+    }
+
+    for (int i = 1; i < size; i++)
+    {
+        ServerUnit key = servers[i];
+        int j = i - 1;
+
+        // Debug: tampilkan info server yang sedang disisipkan
+        cout << "\nMenyisipkan server: " << key.id << endl;
+
+        bool shouldSwap = false;
+        while (j >= 0)
+        {
+            switch (sortBy)
+            {
+            case 0:
+                shouldSwap = servers[j].id > key.id;
+                break;
+            case 1:
+                shouldSwap = servers[j].utilization > key.utilization;
+                break;
+            case 2:
+                shouldSwap = servers[j].availableStorage > key.availableStorage;
+                break;
+            case 3:
+                shouldSwap = servers[j].cpuCores > key.cpuCores;
+                break;
+            case 4:
+                shouldSwap = servers[j].ram > key.ram;
+                break;
+            default:
+                shouldSwap = false;
+                break;
+            }
+
+            if (!shouldSwap)
+                break;
+
+            // Debug: tampilkan proses pergeseran
+            cout << "  Geser " << servers[j].id << " ke posisi " << j + 1 << endl;
+
+            servers[j + 1] = servers[j];
+            j--;
+        }
+
+        servers[j + 1] = key;
+        cout << "  -> Ditempatkan di posisi " << j + 1 << endl;
+    }
+
+    // Tampilkan hasil akhir
+    cout << "\n=== Hasil Setelah Sorting (Ascending) ===" << endl;
+    cout << "+-------+------------+------------+---------------+------------+--------+" << endl;
+    cout << "| No.   | Server ID  | Utilisasi | Avail Storage | CPU Cores | RAM GB |" << endl;
+    cout << "+-------+------------+------------+---------------+------------+--------+" << endl;
+    for (int i = 0; i < size; i++)
+    {
+        cout << "| " << setw(5) << left << i + 1 << " | "
+             << setw(10) << left << servers[i].id << " | "
+             << setw(10) << left << servers[i].utilization << " | "
+             << setw(13) << left << servers[i].availableStorage << " | "
+             << setw(10) << left << servers[i].cpuCores << " | "
+             << setw(6) << left << servers[i].ram << " |" << endl;
+    }
+    cout << "+-------+------------+------------+---------------+------------+--------+" << endl;
 }
 
 // Fungsi Generate Reports ***PlaceHolder WIP***
