@@ -130,9 +130,7 @@ bool validateServerPlacement(int row, int colum);
 void displayServerInputForm(ServerUnit& server);
 // Search
 void search();
-void findServerByType();
 void findAvailableStorage();
-void findServersByStatus();
 void findServerById();
 // Sort
 void sortData();
@@ -196,7 +194,7 @@ void startMenu()
     {
         system("cls");
         cout << "===== DATA CENTER MANAGEMENT SYSTEM =====" << endl;
-        cout << "===== DCMS V 0.9 (Unreleased) #2025 =====" << endl;
+        cout << "=====  DCMS V 1.0 (released) #2025  =====" << endl;
         cout << "[Current Date & Time: " << getCurrentDateTime() << "]" << endl << endl;
         cout << "+---------------------------------------+" << endl;
         cout << "|             START MENU                |" << endl;
@@ -587,7 +585,7 @@ void mainMenu()
         system("cls");
         // Diplay Header
         cout << "===== DATA CENTER MANAGEMENT SYSTEM =====" << endl;
-        cout << "===== DCMS V 0.9 (Unreleased) #2025 =====" << endl;
+        cout << "=====  DCMS V 1.0 (released) #2025  =====" << endl;
         cout << "[Current Date & Time: " << getCurrentDateTime() << "]" << endl
              << endl;
 
@@ -1848,12 +1846,10 @@ void search()
     {
         system("cls");
         cout << "\n===== Pencarian =====" << endl;
-        cout << "1. Cari Server Berdasarkan Tipe (Sequential)" << endl;
-        cout << "2. Cari Server Berdasarkan Available Storage (Binary Search)" << endl;
-        cout << "3. Cari Server Berdasarkan Status (Sequential)" << endl;
-        cout << "4. Cari Server Berdasarkan ID (Binary Search)" << endl;
-        cout << "5. Kembali ke Menu Utama" << endl;
-        cout << "Pilih opsi [1-5]: ";
+        cout << "1. Cari Server Berdasarkan Available Storage (Binary Search)" << endl;
+        cout << "2. Cari Server Berdasarkan ID (Binary Search)" << endl;
+        cout << "3. Kembali ke Menu Utama" << endl;
+        cout << "Pilih opsi [1-3]: ";
         cin >> choice;
         if (cin.fail())
         {
@@ -1867,18 +1863,12 @@ void search()
         switch (choice)
         {
         case 1:
-            findServerByType();
-            break;
-        case 2:
             findAvailableStorage();
             break;
-        case 3:
-            findServersByStatus();
-            break;
-        case 4:
+        case 2:
             findServerById();
             break;
-        case 5:
+        case 3:
             exit = true;
             break;
         default:
@@ -1890,13 +1880,7 @@ void search()
         }
     } while (!exit);
 }
-void findServerByType()
-{
-    system("cls");
-    cout << "\n===== Pencarian =====" << endl;
-    cout << "Curently PlaceHolder" << endl;
 
-}
 void findAvailableStorage()
 {
     system("cls");
@@ -2019,12 +2003,7 @@ void findAvailableStorage()
     cin.ignore();
     cin.get();
 }
-void findServersByStatus()
-{
-    system("cls");
-    cout << "\n===== Pencarian =====" << endl;
-    cout << "Curently PlaceHolder" << endl;
-}
+
 void findServerById()
 {
     system("cls");
@@ -2489,9 +2468,6 @@ void insertionSortServersAscending(ServerUnit servers[], int size, int sortBy)
     cout << "Berdasarkan: ";
     switch (sortBy)
     {
-    case 0:
-        cout << "ID Server\n";
-        break;
     case 1:
         cout << "Utilisasi (%)\n";
         break;
@@ -2499,9 +2475,12 @@ void insertionSortServersAscending(ServerUnit servers[], int size, int sortBy)
         cout << "Available Storage (GB)\n";
         break;
     case 3:
-        cout << "CPU Cores\n";
+        cout << "Total Storage (GB)\n";
         break;
     case 4:
+        cout << "CPU Cores\n";
+        break;
+    case 5:
         cout << "RAM (GB)\n";
         break;
     default:
@@ -2517,24 +2496,24 @@ void insertionSortServersAscending(ServerUnit servers[], int size, int sortBy)
         // Debug: tampilkan info server yang sedang disisipkan
         cout << "\nMenyisipkan server: " << key.id << endl;
 
-        bool shouldSwap = false;
-        while (j >= 0)
+        while (j >= 0 )
         {
+            bool shouldSwap = false;
             switch (sortBy)
             {
-            case 0:
-                shouldSwap = servers[j].id > key.id;
-                break;
             case 1:
                 shouldSwap = servers[j].utilization > key.utilization;
                 break;
             case 2:
                 shouldSwap = servers[j].availableStorage > key.availableStorage;
                 break;
-            case 3:
-                shouldSwap = servers[j].cpuCores > key.cpuCores;
+            case 3: 
+                shouldSwap = servers[j].stroageCapacity > key.stroageCapacity;
                 break;
             case 4:
+                shouldSwap = servers[j].cpuCores > key.cpuCores;
+                break;
+            case 5:
                 shouldSwap = servers[j].ram > key.ram;
                 break;
             default:
@@ -2543,34 +2522,17 @@ void insertionSortServersAscending(ServerUnit servers[], int size, int sortBy)
             }
 
             if (!shouldSwap)
+            {
+                servers[j + 1] = servers[j];
+                j--;
+            }
+            else
+            {
                 break;
-
-            // Debug: tampilkan proses pergeseran
-            cout << "  Geser " << servers[j].id << " ke posisi " << j + 1 << endl;
-
-            servers[j + 1] = servers[j];
-            j--;
+            }
         }
-
         servers[j + 1] = key;
-        cout << "  -> Ditempatkan di posisi " << j + 1 << endl;
     }
-
-    // Tampilkan hasil akhir
-    cout << "\n=== Hasil Setelah Sorting (Ascending) ===" << endl;
-    cout << "+-------+------------+------------+---------------+------------+--------+" << endl;
-    cout << "| No.   | Server ID  | Utilisasi | Avail Storage | CPU Cores | RAM GB |" << endl;
-    cout << "+-------+------------+------------+---------------+------------+--------+" << endl;
-    for (int i = 0; i < size; i++)
-    {
-        cout << "| " << setw(5) << left << i + 1 << " | "
-             << setw(10) << left << servers[i].id << " | "
-             << setw(10) << left << servers[i].utilization << " | "
-             << setw(13) << left << servers[i].availableStorage << " | "
-             << setw(10) << left << servers[i].cpuCores << " | "
-             << setw(6) << left << servers[i].ram << " |" << endl;
-    }
-    cout << "+-------+------------+------------+---------------+------------+--------+" << endl;
 }
 
 // Fungsi Generate Reports ***PlaceHolder WIP***
