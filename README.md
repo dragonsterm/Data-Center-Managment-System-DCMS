@@ -80,7 +80,7 @@ Operasi CRUD lengkap dengan validasi input dan interface yang user-friendly
 </td>
 <td align="center" width="33%">
 
-### 🔍 Pencarian Cerdas
+### 🔍 Searching
 Binary Search untuk pencarian berdasarkan ID dan Available Storage
 
 </td>
@@ -88,7 +88,7 @@ Binary Search untuk pencarian berdasarkan ID dan Available Storage
 <tr>
 <td align="center" width="33%">
 
-### 📊 Pengurutan Data
+### 📊 Sorting Data
 Quick Sort dan Insertion Sort dengan multiple criteria
 
 </td>
