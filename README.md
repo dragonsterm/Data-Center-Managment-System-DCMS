@@ -3190,7 +3190,7 @@ Server dengan ID "WEB-001" ditemukan!
 - **CRUD Operations**: Implementasi operasi Create, Read, Update, Delete
 
 <div align="center">
-  <h2>⭐ Diagram Implementasi ⭐</h2>
+  <h2>⭐ Diagram Relasi ⭐</h2>
 
 ```mermaid
 classDiagram
